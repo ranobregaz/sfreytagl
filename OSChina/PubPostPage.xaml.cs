@@ -8,10 +8,11 @@ using System. Windows;
 using System. Windows. Controls;
 using OSChina. Model;
 using WP7_WebLib. HttpPost;
+using WP7_ControlsLib.Controls;
 
 namespace OSChina
 {
-    public partial class PubPostPage : WP7_ControlsLib. Controls. ProgressTrayPage
+    public partial class PubPostPage : WP7_ControlsLib.Controls.ProgressTrayPage
     {
         #region Construct
         /// <summary>
@@ -79,7 +80,7 @@ namespace OSChina
                 MessageBox. Show( "问题内容请不要为空" );
                 return;
             }
-            ( this as WP7_ControlsLib. Controls. ProgressTrayPage ). LoadingText = "正在提交";
+            ( this as WP7_ControlsLib.Controls.ProgressTrayPage ). LoadingText = "正在提交";
             ( this as WP7_ControlsLib. Controls. ProgressTrayPage ). ProgressIndicatorIsVisible = true;
             Dictionary<string, object> parameters = new Dictionary<string, object>
             {

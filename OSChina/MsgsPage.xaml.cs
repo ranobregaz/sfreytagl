@@ -7,7 +7,7 @@ using Microsoft. Phone. Controls;
 
 namespace OSChina
 {
-    public partial class MsgsPage : PhoneApplicationPage
+    public partial class MsgsPage : WP7_ControlsLib.Controls.ProgressTrayPage
     {
         #region Construct
         /// <summary>

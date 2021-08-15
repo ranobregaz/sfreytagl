@@ -3,18 +3,19 @@
  * 
  */
 using System;
-using System. Collections. Generic;
-using System. IO;
-using System. Windows;
-using System. Windows. Media. Imaging;
-using Microsoft. Phone. Shell;
-using Microsoft. Phone. Tasks;
-using OSChina. Model;
-using WP7_WebLib. HttpPost;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows;
+using System.Windows.Media.Imaging;
+using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
+using OSChina.Model;
+using WP7_WebLib.HttpPost;
+using WP7_ControlsLib.Controls;
 
 namespace OSChina
 {
-    public partial class PubTweetPage : WP7_ControlsLib. Controls. ProgressTrayPage
+    public partial class PubTweetPage : WP7_ControlsLib.Controls.ProgressTrayPage
     {
         #region Fields
         private Stream g_stream;
@@ -143,12 +144,11 @@ namespace OSChina
             this. g_stream = Config. Cache_TweetPic;
             if ( this.g_stream == null )
             {
-                ( this as WP7_ControlsLib. Controls. ProgressTrayPage ). LoadingText = "正在提交";
-                ( this as WP7_ControlsLib. Controls. ProgressTrayPage ). ProgressIndicatorIsVisible = true;
+                
                 PostClient client = Tool. SendPostClient( Config. api_tweet_pub, parameters );
                 client. DownloadStringCompleted += (s, e1) =>
                 {
-                    ( this as WP7_ControlsLib. Controls. ProgressTrayPage ). ProgressIndicatorIsVisible = false;
+                    
                     if ( e1. Error != null )
                     {
                         System. Diagnostics. Debug. WriteLine( "发布动弹时网络错误: {0}", e1. Error. Message );

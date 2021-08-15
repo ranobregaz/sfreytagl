@@ -329,6 +329,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="OSChina_2014_05_22_15_36_06.sap" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
@@ -337,7 +338,9 @@
   <ItemGroup>
     <Content Include="Background.png" />
     <Content Include="ApplicationIcon.png" />
-    <Content Include="Lib\Coding4Fun.Phone.Controls.dll" />
+    <Content Include="Lib\Coding4Fun.Phone.Controls.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Lib\HtmlAgilityPack.dll" />
     <Content Include="Lib\System.Xml.XPath.dll" />
     <Content Include="Lib\WatermarkedTextBoxControl.dll" />

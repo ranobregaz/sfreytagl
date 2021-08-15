@@ -2,14 +2,15 @@
  * 原作者: 王俊
  * 
  */
-using System. Collections. Generic;
-using System. Windows;
-using OSChina. Model;
-using WP7_WebLib. HttpPost;
+using System.Collections.Generic;
+using System.Windows;
+using OSChina.Model;
+using WP7_WebLib.HttpPost;
+using WP7_ControlsLib.Controls;
 
 namespace OSChina
 {
-    public partial class LoginPage : WP7_ControlsLib. Controls. ProgressTrayPage
+    public partial class LoginPage : WP7_ControlsLib.Controls.ProgressTrayPage
     {
         #region Fields
         /// <summary>

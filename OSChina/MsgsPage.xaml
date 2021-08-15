@@ -1,4 +1,4 @@
-﻿<phone:PhoneApplicationPage 
+﻿<tileEffect:ProgressTrayPage 
     x:Class="OSChina.MsgsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -33,4 +33,4 @@
         <MyControl:MsgListControl x:Name="msglistControl" Height="650" Grid.Row="1" Margin="4,0,0,0" />
     </Grid>
 
-</phone:PhoneApplicationPage>
+</tileEffect:ProgressTrayPage>
