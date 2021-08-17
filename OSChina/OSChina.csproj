@@ -58,6 +58,7 @@
     <Reference Include="Microsoft.Phone.Controls" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Silverlight_ZXing_Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -67,6 +68,9 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml.XPath, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="WatermarkedTextBoxControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="WP7_Barcode_Library">
+      <HintPath>Lib\WP7_Barcode_Library.dll</HintPath>
+    </Reference>
     <Reference Include="WP7_ControlsLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WP7_JsonLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WP7_UitlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
@@ -80,6 +84,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="App\Config.cs" />
+    <Compile Include="Model\ActionSing.cs" />
+    <Compile Include="ScanCode.xaml.cs">
+      <DependentUpon>ScanCode.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ActiveListControl.xaml.cs">
       <DependentUpon>ActiveListControl.xaml</DependentUpon>
     </Compile>
@@ -170,9 +178,11 @@
     <Compile Include="Model\UserInfo.cs" />
     <Compile Include="Model\UserNotice.cs" />
     <Compile Include="Model\MsgUnit.cs" />
+    <Compile Include="Model\QRCodeInfo.cs" />
     <Compile Include="MsgsPage.xaml.cs">
       <DependentUpon>MsgsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PhotoCameraLuminanceSource.cs" />
     <Compile Include="PostsPage.xaml.cs">
       <DependentUpon>PostsPage.xaml</DependentUpon>
     </Compile>
@@ -185,6 +195,9 @@
     </Compile>
     <Compile Include="PubTweetPage.xaml.cs">
       <DependentUpon>PubTweetPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScanResult.xaml.cs">
+      <DependentUpon>ScanResult.xaml</DependentUpon>
     </Compile>
     <Compile Include="SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
@@ -210,6 +223,10 @@
     <Page Include="ActivesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScanCode.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ActiveListControl.xaml">
       <SubType>Designer</SubType>
@@ -307,6 +324,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ScanResult.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -342,6 +363,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Lib\HtmlAgilityPack.dll" />
+    <Content Include="Lib\Silverlight_ZXing_Core.dll" />
     <Content Include="Lib\System.Xml.XPath.dll" />
     <Content Include="Lib\WatermarkedTextBoxControl.dll" />
     <Content Include="Lib\WP7_ControlsLib.dll" />

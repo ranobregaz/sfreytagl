@@ -1,0 +1,39 @@
+﻿<tileEffect:ProgressTrayPage 
+    x:Class="OSChina.ScanResult"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:water="clr-namespace:WatermarkedTextBoxControl;assembly=WatermarkedTextBoxControl"
+    xmlns:Control="clr-namespace:OSChina.Controls"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Style="{StaticResource TransitionPageStyle}"
+    xmlns:tileEffect="clr-namespace:WP7_ControlsLib.Controls;assembly=WP7_ControlsLib"
+    tileEffect:TiltEffect.IsTiltEnabled="True"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="开源中国" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="扫一扫" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <TextBlock x:Name="qrTitle" TextWrapping="Wrap" Margin="12,12,12,0" VerticalAlignment="Top" Opacity="1.0" Text="标题" />
+            <TextBlock x:Name="qrType" TextWrapping="Wrap" Margin="12,100,12,0" VerticalAlignment="Top" Opacity="1.0" Text="类型" />
+            <TextBlock x:Name="qrRequireLogin" TextWrapping="Wrap" Margin="0,100,12,0" VerticalAlignment="Top" Opacity="1.0" Text="是否需要登录" HorizontalAlignment="Right" Width="122" />
+            <Button x:Name="submitQRInfo" Content="提交" Margin="100,0,100,10" Height="80" VerticalAlignment="Bottom" Click="submitQRInfo_Click" />
+        </Grid>
+    </Grid>
+</tileEffect:ProgressTrayPage>
