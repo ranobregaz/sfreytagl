@@ -112,7 +112,6 @@ namespace OSChina
                 {
                     System.Diagnostics.Debug.WriteLine("提交签到时网络错误: {0}", e1.Error.Message);
                     MessageBox.Show("提交签到时网络错误,请重试!");
-                    return;
                 }
                 else
                 {
@@ -125,14 +124,13 @@ namespace OSChina
                     {
                         System.Diagnostics.Debug.WriteLine("反序列化错误:" + ex.Message);
                         MessageBox.Show("获取返回信息失败,请重试!");
-                        return;
                     }
                     if (result == null)
                     {
                         MessageBox.Show("获取返回信息失败,请重试!");
-                        return;
                     }
-                    else {
+                    else
+					{
                         if (string.Empty.Equals(result.error))
                         {
                             flg = 1;
@@ -148,9 +146,10 @@ namespace OSChina
                         else
                         {
                             MessageBox.Show(result.error);
-                            return;
                         }
                     }
+					submitQRInfo.IsEnabled = true;
+					submitQRInfo.Content = "重新提交";
                 }
             };
             return flg;
@@ -159,21 +158,14 @@ namespace OSChina
         private void SubmitInfo2OSChina()
         {
             System.Diagnostics.Debug.WriteLine("Info_Submit");
-            int result = 0;
             switch (qrinfo.type)
             {
-                case 1: result = ActionSingQRCode(); break;
+                case 1: ActionSingQRCode(); break;
                 //case 2: result = OtherQRCode(qrinfo); break;
                 default: 
-                    result = 1;
                     submitQRInfo.IsEnabled = false;
                     submitQRInfo.Content = "提交"; 
                     break;
-            }
-            if (result == 0)
-            {
-                submitQRInfo.IsEnabled = true;
-                submitQRInfo.Content = "重新提交";
             }
         }
 
