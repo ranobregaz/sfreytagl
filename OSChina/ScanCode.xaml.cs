@@ -110,9 +110,16 @@ namespace OSChina
 
         private void ScanPreviewBuffer()
         {
-            _photoCamera.GetPreviewBufferY(_luminance.PreviewBufferY);
-            _reader.Decode(_luminance);
-            _photoCamera.Focus();
+            try
+            {
+                _photoCamera.GetPreviewBufferY(_luminance.PreviewBufferY);
+                _reader.Decode(_luminance);
+                _photoCamera.Focus();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("解码失败");
+            }
         }
 
         void ScanCodeRectSuccess()
