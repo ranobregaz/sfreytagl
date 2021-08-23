@@ -434,11 +434,6 @@ namespace OSChina
 
         private void menu_QR_Click(object sender, EventArgs e)
         {
-
-            if (Tool.CheckLogin("请登陆后再进行扫码操作", "温馨提示") == false)
-            {
-                return;
-            }
             Tool.To("/ScanCode.xaml");
         }
     }

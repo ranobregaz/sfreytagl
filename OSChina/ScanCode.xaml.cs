@@ -7,13 +7,12 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Devices;
-using com.google.zxing;
-using com.google.zxing.oned;
-using com.google.zxing.qrcode;
-using com.google.zxing.common;
 using System.Windows.Threading;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using ZXing.Common;
+using ZXing;
+using ZXing.QrCode;
 
 namespace OSChina
 {
@@ -22,7 +21,7 @@ namespace OSChina
         private PhotoCamera _photoCamera;
         private PhotoCameraLuminanceSource _luminance;
         private readonly DispatcherTimer _timer;
-        private Reader _reader = null;
+        private BarcodeReader _reader = null;
         private bool _iswork = false;
 
         public ScanCode()
@@ -34,7 +33,6 @@ namespace OSChina
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _reader = new QRCodeReader();
             _timer.Interval = TimeSpan.FromMilliseconds(250);
             _timer.Tick += (o, arg) => ScanPreviewBuffer();
             _photoCamera = new PhotoCamera();
@@ -64,7 +62,6 @@ namespace OSChina
                 System.Diagnostics.Debug.WriteLine(e.Exception);
                 if (e.Succeeded)
                 {
-                    _iswork = true;
                     int width = Convert.ToInt32(_photoCamera.PreviewResolution.Width);
                     int height = Convert.ToInt32(_photoCamera.PreviewResolution.Height);
                     _luminance = new PhotoCameraLuminanceSource(width, height);
@@ -76,6 +73,9 @@ namespace OSChina
                     });
                     _photoCamera.FlashMode = FlashMode.Auto;
                     _photoCamera.Focus();
+                    _reader = new BarcodeReader();
+                    _reader.Options.TryHarder = true;
+                    _reader.ResultFound += _bcReader_ResultFound;
                 }
                 else
                 {
@@ -88,59 +88,31 @@ namespace OSChina
                 }
         }
 
-        public void SetStillPicture()
+        private void _bcReader_ResultFound(Result result)
         {
-            int width = Convert.ToInt32(_photoCamera.PreviewResolution.Width);
-            int height = Convert.ToInt32(_photoCamera.PreviewResolution.Height);
-            int[] PreviewBuffer = new int[width * height];
-            _photoCamera.GetPreviewBufferArgb32(PreviewBuffer);
-
-            WriteableBitmap wb = new WriteableBitmap(width, height);
-            PreviewBuffer.CopyTo(wb.Pixels, 0);
-
-            MemoryStream ms = new MemoryStream();
-            wb.SaveJpeg(ms, wb.PixelWidth, wb.PixelHeight, 0, 80);
-            ms.Seek(0, SeekOrigin.Begin);
-
-            BitmapImage bi = new BitmapImage();
-            bi.SetSource(ms);
-            ImageBrush still = new ImageBrush();
-            still.ImageSource = bi;
-            frame.Fill = still;
-            still.RelativeTransform = new CompositeTransform() { CenterX = 0.5, CenterY = 0.5, Rotation = _photoCamera.Orientation };
-        }
-
-        private void ScanPreviewBuffer()
-        {
-            _photoCamera.GetPreviewBufferY(_luminance.PreviewBufferY);
-            var binarizer = new HybridBinarizer(_luminance);
-            var binBitmap = new BinaryBitmap(binarizer);
-            Result result = null;
-            try
-            {
-                result = _reader.decode(binBitmap);
-            }
-            catch (ReaderException rex)
-            {
-                System.Diagnostics.Debug.WriteLine("扫描错误:" + rex.Message);
-                System.Diagnostics.Debug.WriteLine("result is " + (result!=null?"not ":"") + "null");
-            }
             if (result != null)
             {
                 _timer.Stop();
-                SetStillPicture();
                 ScanCodeRectSuccess();
-                Dispatcher.BeginInvoke(() =>
+                if (!string.IsNullOrEmpty(result.Text))
                 {
-                    //读取成功，结果存放在result.Text
-                    NavigationService.Navigate(new Uri("/ScanResult.xaml?result=" + result.Text, UriKind.Relative));
-
-                });
+                    Dispatcher.BeginInvoke(() =>
+                    {
+                        NavigationService.Navigate(new Uri("/ScanResult.xaml?result=" + result.Text, UriKind.Relative));
+                    });
+                }
             }
             else
             {
                 _photoCamera.Focus();
             }
+        }
+
+        private void ScanPreviewBuffer()
+        {
+            _photoCamera.GetPreviewBufferY(_luminance.PreviewBufferY);
+            _reader.Decode(_luminance);
+            _photoCamera.Focus();
         }
 
         void ScanCodeRectSuccess()

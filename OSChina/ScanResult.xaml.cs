@@ -92,16 +92,22 @@ namespace OSChina
             }
         }
 
-        private int ActionSingQRCode()
+        private void ActionSingQRCode()
         {
-            System.Diagnostics.Debug.WriteLine("Info_ActionSing");
             int flg = 0;
+            System.Diagnostics.Debug.WriteLine("Info_ActionSing");
             submitQRInfo.IsEnabled = false;
             submitQRInfo.Content = "提交中...";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             
             if (qrinfo.require_login)
             {
+                if (Tool.CheckLogin("请登陆后再进行提交操作", "温馨提示") == false)
+                {
+                    submitQRInfo.IsEnabled = true;
+                    submitQRInfo.Content = "重新提交";
+                    return;
+                }
                 parameters.Add("Cookie",Config.Cookie);
             }
             PostClient client = Tool.SendPostClient(qrinfo.url,parameters);
@@ -148,11 +154,17 @@ namespace OSChina
                             MessageBox.Show(result.error);
                         }
                     }
-					submitQRInfo.IsEnabled = true;
-					submitQRInfo.Content = "重新提交";
+                    if (flg == 0)
+                    {
+                        submitQRInfo.IsEnabled = true;
+                        submitQRInfo.Content = "重新提交";
+                    }
+                    else
+                    {
+                        submitQRInfo.Content = "已提交";
+                    }
                 }
             };
-            return flg;
         }
 
         private void SubmitInfo2OSChina()
