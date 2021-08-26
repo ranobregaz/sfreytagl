@@ -82,7 +82,7 @@
     </Compile>
     <Compile Include="App\Config.cs" />
     <Compile Include="Model\ActionSing.cs" />
-    <Compile Include="PhotoCameraLuminanceSource.cs" />
+    <Compile Include="Helper\PhotoCameraLuminanceSource.cs" />
     <Compile Include="ScanCode.xaml.cs">
       <DependentUpon>ScanCode.xaml</DependentUpon>
     </Compile>

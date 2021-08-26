@@ -30,9 +30,9 @@
         </StackPanel>
 
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBlock x:Name="qrTitle" TextWrapping="Wrap" Margin="12,12,12,0" VerticalAlignment="Top" Opacity="1.0" Text="标题" />
-            <TextBlock x:Name="qrType" TextWrapping="Wrap" Margin="12,100,12,0" VerticalAlignment="Top" Opacity="1.0" Text="类型" />
-            <TextBlock x:Name="qrRequireLogin" TextWrapping="Wrap" Margin="0,100,12,0" VerticalAlignment="Top" Opacity="1.0" Text="是否需要登录" HorizontalAlignment="Right" Width="122" />
+            <TextBlock x:Name="qrTitle" TextWrapping="Wrap" Margin="12,12,12,0" VerticalAlignment="Top" Opacity="1.0" Text="标题" FontSize="30" />
+            <TextBlock x:Name="qrType" TextWrapping="Wrap" Margin="12,0,12,150" VerticalAlignment="Bottom" Opacity="1.0" Text="类型" />
+            <TextBlock x:Name="qrRequireLogin" TextWrapping="Wrap" Margin="12,0,12,100" VerticalAlignment="Bottom" Opacity="1.0" Text="是否需要登录" />
             <Button x:Name="submitQRInfo" Content="提交" Margin="100,0,100,10" Height="80" VerticalAlignment="Bottom" Click="submitQRInfo_Click" />
         </Grid>
     </Grid>

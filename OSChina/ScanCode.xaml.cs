@@ -118,7 +118,7 @@ namespace OSChina
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("解码失败");
+                System.Diagnostics.Debug.WriteLine("解码异常:" + ex.Message);
             }
         }
 
