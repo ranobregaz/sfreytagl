@@ -39,28 +39,21 @@ namespace OSChina
             System.Diagnostics.Debug.WriteLine("Page_To");
             if (NavigationContext.QueryString.TryGetValue("result", out qrcodestring))
             {
-                if ("".Equals(qrcodestring) || qrcodestring == null)
+                try
                 {
-                    MessageBox.Show("获取信息失败,请重试!");
+                    qrinfo = JsonUtil.JsonDeSerialize<QRCodeInfo>(qrcodestring);
+                    if (qrinfo != null && qrinfo.url != null && qrinfo.title != null)
+                    {
+                        qrType.Text = QRType2Str[(qrinfo.type >= QRType2Str.Length ? 0 : qrinfo.type)];
+                        qrTitle.Text = qrinfo.title;
+                        qrRequireLogin.Text = (qrinfo.require_login ? "" : "不") + "需要登录";
+                        isLoadSuccess = true;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    try
-                    {
-                        qrinfo = JsonUtil.JsonDeSerialize<QRCodeInfo>(qrcodestring);
-                        if (qrinfo != null)
-                        {
-                            qrType.Text = QRType2Str[(qrinfo.type >= QRType2Str.Length ? 0 : qrinfo.type)];
-                            qrTitle.Text = qrinfo.title;
-                            qrRequireLogin.Text = (qrinfo.require_login ? "" : "不") + "需要登录";
-                            isLoadSuccess = true;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine("反序列化错误:" + ex.Message);
-                        MessageBox.Show("解码失败,请确认二维码来源为开源中国!");
-                    }
+                    System.Diagnostics.Debug.WriteLine("反序列化错误:" + ex.Message);
+                    MessageBox.Show("解码失败,请确认二维码来源为开源中国!");
                 }
             }
             base.OnNavigatedTo(e);
@@ -87,6 +80,7 @@ namespace OSChina
             }
             else
             {
+                MessageBox.Show("数据校验异常,请确认二维码来源为开源中国!");
                 this.IsEnabled = false;
                 base.NavigationService.GoBack();
             }
@@ -98,6 +92,8 @@ namespace OSChina
             System.Diagnostics.Debug.WriteLine("Info_ActionSing");
             submitQRInfo.IsEnabled = false;
             submitQRInfo.Content = "提交中...";
+            this.LoadingText = "正在提交";
+            this.ProgressIndicatorIsVisible = true;
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             
             if (qrinfo.require_login)
@@ -106,6 +102,7 @@ namespace OSChina
                 {
                     submitQRInfo.IsEnabled = true;
                     submitQRInfo.Content = "重新提交";
+                    this.ProgressIndicatorIsVisible = false;
                     return;
                 }
                 parameters.Add("Cookie",Config.Cookie);
@@ -113,7 +110,7 @@ namespace OSChina
             PostClient client = Tool.SendPostClient(qrinfo.url,parameters);
             client.DownloadStringCompleted += (s, e1) =>
             {
-                (this as WP7_ControlsLib.Controls.ProgressTrayPage).ProgressIndicatorIsVisible = false;
+                this.ProgressIndicatorIsVisible = false;
                 if (e1.Error != null)
                 {
                     System.Diagnostics.Debug.WriteLine("提交签到时网络错误: {0}", e1.Error.Message);
@@ -129,7 +126,6 @@ namespace OSChina
                     catch (Exception ex)
                     {
                         System.Diagnostics.Debug.WriteLine("反序列化错误:" + ex.Message);
-                        MessageBox.Show("获取返回信息失败,请重试!");
                     }
                     if (result == null)
                     {
@@ -137,7 +133,11 @@ namespace OSChina
                     }
                     else
 					{
-                        if (string.Empty.Equals(result.error))
+                        if (!string.IsNullOrEmpty(result.error))
+                        {
+                            MessageBox.Show(result.error);
+                        }
+                        else if (!string.IsNullOrEmpty(result.msg))
                         {
                             flg = 1;
                             MessageBoxResult showMsg = MessageBox.Show(result.msg, "提示", MessageBoxButton.OK);
@@ -151,7 +151,7 @@ namespace OSChina
                         }
                         else
                         {
-                            MessageBox.Show(result.error);
+                            MessageBox.Show("获取的返回信息不正确,请重试!");
                         }
                     }
                     if (flg == 0)
