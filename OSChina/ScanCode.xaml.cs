@@ -1,18 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using Microsoft.Devices;
-using System.Windows.Threading;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using ZXing.Common;
+using System.Windows.Threading;
+using Microsoft.Devices;
+using Microsoft.Phone.Controls;
 using ZXing;
-using ZXing.QrCode;
 
 namespace OSChina
 {
