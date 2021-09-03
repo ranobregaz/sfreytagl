@@ -71,6 +71,7 @@
     <Reference Include="WP7_JsonLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WP7_UitlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WP7_WebLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="zxing.wp7.1, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivesPage.xaml.cs">
@@ -80,6 +81,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="App\Config.cs" />
+    <Compile Include="Model\ActionSing.cs" />
+    <Compile Include="Helper\PhotoCameraLuminanceSource.cs" />
+    <Compile Include="ScanCode.xaml.cs">
+      <DependentUpon>ScanCode.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ActiveListControl.xaml.cs">
       <DependentUpon>ActiveListControl.xaml</DependentUpon>
     </Compile>
@@ -170,6 +176,7 @@
     <Compile Include="Model\UserInfo.cs" />
     <Compile Include="Model\UserNotice.cs" />
     <Compile Include="Model\MsgUnit.cs" />
+    <Compile Include="Model\QRCodeInfo.cs" />
     <Compile Include="MsgsPage.xaml.cs">
       <DependentUpon>MsgsPage.xaml</DependentUpon>
     </Compile>
@@ -185,6 +192,9 @@
     </Compile>
     <Compile Include="PubTweetPage.xaml.cs">
       <DependentUpon>PubTweetPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScanResult.xaml.cs">
+      <DependentUpon>ScanResult.xaml</DependentUpon>
     </Compile>
     <Compile Include="SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
@@ -210,6 +220,10 @@
     <Page Include="ActivesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScanCode.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ActiveListControl.xaml">
       <SubType>Designer</SubType>
@@ -307,6 +321,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ScanResult.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -348,6 +366,7 @@
     <Content Include="Lib\WP7_JsonLib.dll" />
     <Content Include="Lib\WP7_UitlLib.dll" />
     <Content Include="Lib\WP7_WebLib.dll" />
+    <Content Include="Lib\zxing.wp7.1.dll" />
     <Content Include="LICENSE.txt" />
     <Content Include="Resource\at.png" />
     <Content Include="Resource\900-800.png" />

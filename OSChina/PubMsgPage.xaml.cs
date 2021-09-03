@@ -14,7 +14,7 @@ using WP7_WebLib. HttpPost;
 
 namespace OSChina
 {
-    public partial class PubMsgPage : WP7_ControlsLib. Controls. ProgressTrayPage
+    public partial class PubMsgPage : WP7_ControlsLib.Controls.ProgressTrayPage
     {
         #region Properties
         private int receiverID { get; set; }
@@ -22,93 +22,93 @@ namespace OSChina
         #endregion
 
         #region Construct
-        public PubMsgPage( )
+        public PubMsgPage()
         {
-            InitializeComponent( );
-            this. Loaded += (s, e) =>
+            InitializeComponent();
+            this.Loaded += (s, e) =>
                 {
-                    this. txtContent. Focus( );
+                    this.txtContent.Focus();
                 };
         }
 
-        protected override void OnNavigatedTo(System. Windows. Navigation. NavigationEventArgs e)
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             //登陆验证
-            IDictionary<string, string> queryString = this. NavigationContext. QueryString;
-            if ( queryString.ContainsKey("receiverID") && queryString.ContainsKey("receiver") )
+            IDictionary<string, string> queryString = this.NavigationContext.QueryString;
+            if (queryString.ContainsKey("receiverID") && queryString.ContainsKey("receiver"))
             {
-                this. receiverID = queryString[ "receiverID" ]. ToInt32( );
-                this. receiver = queryString[ "receiver" ];
-                this. lblTitle. Inlines. Add( new Run { Text = "发给 ", FontSize = 28 } );
-                this. lblTitle. Inlines. Add( new Run
+                this.receiverID = queryString["receiverID"].ToInt32();
+                this.receiver = queryString["receiver"];
+                this.lblTitle.Inlines.Add(new Run { Text = "发给 ", FontSize = 28 });
+                this.lblTitle.Inlines.Add(new Run
                 {
-                    Text = queryString[ "receiver" ],
+                    Text = queryString["receiver"],
                     FontSize = 28,
-                    Foreground = Application. Current. Resources[ "PhoneAccentBrush" ] as SolidColorBrush,
-                    FontStyle = FontStyles. Italic
-                } );
+                    Foreground = Application.Current.Resources["PhoneAccentBrush"] as SolidColorBrush,
+                    FontStyle = FontStyles.Italic
+                });
 
                 //验证缓存
-                Dictionary<int, string> cacheMessage = Config. Cache_Message;
-                this. txtContent. Text = cacheMessage. ContainsKey( this. receiverID ) ? cacheMessage[ this. receiverID ] : string. Empty;
+                Dictionary<int, string> cacheMessage = Config.Cache_Message;
+                this.txtContent.Text = cacheMessage.ContainsKey(this.receiverID) ? cacheMessage[this.receiverID] : string.Empty;
             }
-            base. OnNavigatedTo( e );
+            base.OnNavigatedTo(e);
         }
         #endregion
 
         #region Private functions
         private void iconSend_Click(object sender, EventArgs e)
         {
-            string content = txtContent. Text. Trim( );
-            if ( content. Length == 0 )
+            string content = txtContent.Text.Trim();
+            if (content.Length == 0)
             {
-                MessageBox. Show( "留言内容不能为空" );
+                MessageBox.Show("留言内容不能为空");
                 return;
             }
             else
             {
-                ( this as WP7_ControlsLib. Controls. ProgressTrayPage ). LoadingText = "正在提交";
-                ( this as WP7_ControlsLib. Controls. ProgressTrayPage ). ProgressIndicatorIsVisible = true;
+                this.LoadingText = "正在提交";
+                this.ProgressIndicatorIsVisible = true;
                 Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
                     {"uid", Config.UID},
                     {"receiver", this.receiverID},
                     {"content", content},
                 };
-                PostClient client = Tool. SendPostClient( Config. api_msg_pub, parameters );
-                client. DownloadStringCompleted += (s, e1) =>
+                PostClient client = Tool.SendPostClient(Config.api_msg_pub, parameters);
+                client.DownloadStringCompleted += (s, e1) =>
                 {
-                    ( this as WP7_ControlsLib. Controls. ProgressTrayPage ). ProgressIndicatorIsVisible = false;
-                    if ( e1. Error != null )
+                    this.ProgressIndicatorIsVisible = false;
+                    if (e1.Error != null)
                     {
-                        System. Diagnostics. Debug. WriteLine( "发送留言时网络错误: {0}", e1. Error. Message );
+                        System.Diagnostics.Debug.WriteLine("发送留言时网络错误: {0}", e1.Error.Message);
                         return;
                     }
                     else
                     {
-                        ApiResult result = Tool. GetApiResult( e1. Result );
-                        if ( result != null )
+                        ApiResult result = Tool.GetApiResult(e1.Result);
+                        if (result != null)
                         {
-                            switch ( result. errorCode )
+                            switch (result.errorCode)
                             {
                                 case 1:
-                                    if ( this. NavigationService. BackStack. FirstOrDefault( ) != null && this. NavigationService. BackStack. FirstOrDefault( ). Source. OriginalString. Contains( "UserPage" ) )
+                                    if (this.NavigationService.BackStack.FirstOrDefault() != null && this.NavigationService.BackStack.FirstOrDefault().Source.OriginalString.Contains("UserPage"))
                                     {
-                                        Tool. To( string. Format( "/WordsPage.xaml?friendid={0}&friendname={1}", this. receiverID, this. receiver ) );
+                                        Tool.To(string.Format("/WordsPage.xaml?friendid={0}&friendname={1}", this.receiverID, this.receiver));
                                     }
-                                    else if ( this. NavigationService. CanGoBack )
+                                    else if (this.NavigationService.CanGoBack)
                                     {
-                                        this. NavigationService. GoBack( );
+                                        this.NavigationService.GoBack();
                                     }
-                                    if ( Config. Cache_Message. ContainsKey( this. receiverID ) )
+                                    if (Config.Cache_Message.ContainsKey(this.receiverID))
                                     {
-                                        Config. Cache_Message. Remove( this. receiverID );
+                                        Config.Cache_Message.Remove(this.receiverID);
                                     }
                                     break;
                                 case 0:
                                 case -1:
                                 case -2:
-                                    MessageBox. Show( result. errorMessage, "温馨提示", MessageBoxButton. OK );
+                                    MessageBox.Show(result.errorMessage, "温馨提示", MessageBoxButton.OK);
                                     break;
                             }
                         }
@@ -117,12 +117,12 @@ namespace OSChina
                 };
             }
         }
-         
+
         private void txtContent_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Dictionary<int, string> cacheMessage = Config. Cache_Message;
-            cacheMessage[ this. receiverID ] = txtContent. Text;
-            Config. Cache_Message = cacheMessage;
+            Dictionary<int, string> cacheMessage = Config.Cache_Message;
+            cacheMessage[this.receiverID] = txtContent.Text;
+            Config.Cache_Message = cacheMessage;
         }
         #endregion
     }
