@@ -560,7 +560,7 @@ namespace OSChina
         /// <summary>
         /// App 版本号
         /// </summary>
-        public const string AppVersion = "1.8";
+        public const string AppVersion = "1.9";
 
         /// <summary>
         /// 文字提示符
