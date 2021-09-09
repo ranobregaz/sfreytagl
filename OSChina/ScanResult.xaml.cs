@@ -15,37 +15,42 @@ namespace OSChina
         {
             System.Diagnostics.Debug.WriteLine("Page_Init");
             InitializeComponent();
-            qrType.Text = "";
-            qrTitle.Text = "";
-            qrRequireLogin.Text = "";
-            QRType2Str[0] = "未知";
-            QRType2Str[1] = "活动";
+            this.qrType.Text = "";
+            this.qrTitle.Text = "";
+            this.qrRequireLogin.Text = "";
+            this.qrText.Text = "";
+            this.qrText.Visibility = System.Windows.Visibility.Collapsed;
+            this.QRType2Str[0] = "未知二维码";
+            this.QRType2Str[1] = "活动";
         }
-        bool isLoadSuccess = false;
-        private string qrcodestring = string.Empty;
-        QRCodeInfo qrinfo = null;
-        string[] QRType2Str = new string[2];
+        private bool isOSChinaQRCode = false;
+        private string qrCodeString = string.Empty;
+        private QRCodeInfo qrInfo = null;
+        private string[] QRType2Str = new string[2];
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Page_To");
-            if (NavigationContext.QueryString.TryGetValue("result", out qrcodestring))
+            if (NavigationContext.QueryString.TryGetValue("result", out qrCodeString))
             {
                 try
                 {
-                    qrinfo = JsonUtil.JsonDeSerialize<QRCodeInfo>(qrcodestring);
-                    if (qrinfo != null && qrinfo.url != null && qrinfo.title != null)
+                    this.qrInfo = JsonUtil.JsonDeSerialize<QRCodeInfo>(qrCodeString);
+                    if (this.qrInfo != null && this.qrInfo.url != null && this.qrInfo.title != null)
                     {
-                        qrType.Text = QRType2Str[(qrinfo.type >= QRType2Str.Length ? 0 : qrinfo.type)];
-                        qrTitle.Text = qrinfo.title;
-                        qrRequireLogin.Text = (qrinfo.require_login ? "" : "不") + "需要登录";
-                        isLoadSuccess = true;
+                        this.qrType.Text = this.QRType2Str[(this.qrInfo.type >= this.QRType2Str.Length ? 0 : this.qrInfo.type)];
+                        this.qrTitle.Text = this.qrInfo.title;
+                        this.qrRequireLogin.Text = (this.qrInfo.require_login ? "" : "不") + "需要登录";
+                        this.isOSChinaQRCode = true;
                     }
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine("反序列化错误:" + ex.Message);
-                    MessageBox.Show("解码失败,请确认二维码来源为开源中国!");
+                    this.qrTitle.Text = "二维码信息:";
+                    this.qrText.Text = string.IsNullOrEmpty(this.qrCodeString)?string.Empty:this.qrCodeString;
+                    this.qrText.Visibility = System.Windows.Visibility.Visible;
+                    this.submitQRInfo.Content = "复制"; 
                 }
             }
             base.OnNavigatedTo(e);
@@ -54,10 +59,13 @@ namespace OSChina
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Page_From");
-            var lastPage = NavigationService.BackStack.FirstOrDefault();
-            if (lastPage != null && lastPage.Source.ToString().Contains("/ScanCode.xaml"))
+            if (this.isOSChinaQRCode)
             {
-                NavigationService.RemoveBackEntry();
+                var lastPage = NavigationService.BackStack.FirstOrDefault();
+                if (lastPage != null && lastPage.Source.ToString().Contains("/ScanCode.xaml"))
+                {
+                    NavigationService.RemoveBackEntry();
+                }
             }
             base.OnNavigatingFrom(e);
         }
@@ -65,15 +73,13 @@ namespace OSChina
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Page_Loaded");
-            if (isLoadSuccess)
+            if (this.isOSChinaQRCode)
             {
-                SubmitInfo2OSChina();
+                this.processingCodeInfo();
             }
             else
             {
                 MessageBox.Show("数据校验异常,请确认二维码来源为开源中国!");
-                this.IsEnabled = false;
-                base.NavigationService.GoBack();
             }
         }
 
@@ -86,8 +92,8 @@ namespace OSChina
             this.LoadingText = "正在提交";
             this.ProgressIndicatorIsVisible = true;
             Dictionary<string, object> parameters = new Dictionary<string, object>();
-            
-            if (qrinfo.require_login)
+
+            if (this.qrInfo.require_login)
             {
                 if (Tool.CheckLogin("请登陆后再进行提交操作", "温馨提示") == false)
                 {
@@ -98,7 +104,7 @@ namespace OSChina
                 }
                 parameters.Add("Cookie",Config.Cookie);
             }
-            PostClient client = Tool.SendPostClient(qrinfo.url,parameters);
+            PostClient client = Tool.SendPostClient(this.qrInfo.url, parameters);
             client.DownloadStringCompleted += (s, e1) =>
             {
                 this.ProgressIndicatorIsVisible = false;
@@ -158,24 +164,33 @@ namespace OSChina
             };
         }
 
-        private void SubmitInfo2OSChina()
+        private void processingCodeInfo()
         {
             System.Diagnostics.Debug.WriteLine("Info_Submit");
-            switch (qrinfo.type)
+            if (this.isOSChinaQRCode)
             {
-                case 1: ActionSingQRCode(); break;
-                //case 2: result = OtherQRCode(qrinfo); break;
-                default: 
-                    submitQRInfo.IsEnabled = false;
-                    submitQRInfo.Content = "提交"; 
-                    break;
+                switch (this.qrInfo.type)
+                {
+                    case 1:
+                        this.ActionSingQRCode();
+                        break;
+                    //case 2: result = OtherOSChinaQRCode(qrinfo); break;
+                    default:
+                        submitQRInfo.IsEnabled = false;
+                        submitQRInfo.Content = "提交";
+                        break;
+                }
+            }
+            else
+            {
+                Tool.Copy2Clipboard(this.qrCodeString);
             }
         }
 
         private void submitQRInfo_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Info_Click");
-            SubmitInfo2OSChina();
+            this.processingCodeInfo();
         }
     }
 }

@@ -1874,6 +1874,42 @@ namespace OSChina
 
         #endregion
 
+        #region 复制到剪切板
+        /// <summary>
+        /// 检测剪切板是否有内容 如果有则提示并询问是否复制,同意则复制到剪切板 如果没有登陆则复制到剪切板
+        /// </summary>
+        /// <param name="text">要复制的内容</param>
+        /// <returns>true: 表示已经复制 false: 表示没有复制</returns>
+        public static bool Copy2Clipboard(string text = null)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(text))
+                {
+                    if (Clipboard.ContainsText())
+                    {
+                        if (MessageBox.Show("剪切板不是空的,是否覆盖剪切板数据?", "温馨提示", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+                        {
+                            return false;
+                        }
+                    }
+                    Clipboard.SetText(text);
+                    return true;
+                }
+            }
+            catch (System.Security.SecurityException sex)
+            {
+                MessageBox.Show(sex.Message,"没有权限复制到剪切板!",MessageBoxButton.OK);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "复制到剪切板出错了!", MessageBoxButton.OK);
+            }
+            return false;
+        }
+
+        #endregion
+
         #region 后台线程
         /// <summary>
         /// 动弹后台发送中，当动弹中包含图片时 将100%采用这个方法发送
