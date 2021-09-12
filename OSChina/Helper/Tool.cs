@@ -1158,7 +1158,9 @@ namespace OSChina
                             XElement wp7 = root. Element( "update" ). Element( "wp7" );
                             if ( wp7 != null )
                             {
-                                if ( Config. AppVersion != wp7. Value && Config.AppVersion.ToFloat() < wp7.Value.ToFloat())
+                                Version nowVersion = Config.AppVersion;
+                                string nowVersionString = nowVersion.Major + "." + nowVersion.Minor;
+                                if (nowVersionString.ToString() != wp7.Value && nowVersionString.ToFloat() < wp7.Value.ToFloat())
                                 {
                                     if ( MessageBox. Show( "有新版本可用，您确定要升级本客户端吗?", "温馨提示", MessageBoxButton. OKCancel ) == MessageBoxResult. OK )
                                     {
@@ -1894,6 +1896,7 @@ namespace OSChina
                         }
                     }
                     Clipboard.SetText(text);
+                    MessageBox.Show("已复制到剪切板");
                     return true;
                 }
             }

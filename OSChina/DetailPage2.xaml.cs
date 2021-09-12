@@ -302,7 +302,7 @@ namespace OSChina
                         Title = "发表评论",
                         Message = string. Format( "对 {0}", title ),
                         IsCancelVisible = true, 
-                         IsSubmitOnEnterKey = false,
+                        IsSubmitOnEnterKey = false,
                     };
                     //验证缓存
                     Dictionary<string, string> cacheCommentPub = Config. Cache_CommentPub;

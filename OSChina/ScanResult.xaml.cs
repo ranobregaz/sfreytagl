@@ -50,7 +50,7 @@ namespace OSChina
                     this.qrTitle.Text = "二维码信息:";
                     this.qrText.Text = string.IsNullOrEmpty(this.qrCodeString)?string.Empty:this.qrCodeString;
                     this.qrText.Visibility = System.Windows.Visibility.Visible;
-                    this.submitQRInfo.Content = "复制"; 
+                    this.submitQRInfo.Content = "全部复制";
                 }
             }
             base.OnNavigatedTo(e);
