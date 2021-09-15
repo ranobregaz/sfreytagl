@@ -560,7 +560,10 @@ namespace OSChina
         /// <summary>
         /// App 版本号
         /// </summary>
-        public const string AppVersion = "1.9";
+        public static Version AppVersion
+        {
+            get { return new System.Reflection.AssemblyName(System.Reflection.Assembly.GetExecutingAssembly().FullName).Version; }
+        }
 
         /// <summary>
         /// 文字提示符
