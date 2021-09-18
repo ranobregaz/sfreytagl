@@ -309,6 +309,17 @@ namespace OSChina
                     input. Value = cacheCommentPub. ContainsKey( string. Format( "{0}_{1}", this. DetailType, id ) ) ? cacheCommentPub[ string. Format( "{0}_{1}", this. DetailType, id ) ] : string. Empty;
                     input. OnValueChanged += (s, e1) =>
                         {
+                            try
+                            {
+                                InputPrompt inputSender = ((InputPrompt)s);
+                                if (inputSender.InputBox.TextWrapping == TextWrapping.NoWrap)
+                                {
+                                    inputSender.InputBox.TextWrapping = TextWrapping.Wrap;
+                                    inputSender.InputBox.AcceptsReturn = true;
+                                    inputSender.InputBox.VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Visible;
+                                }
+                            }
+                            catch{}
                             Dictionary<string, string> cacheCommentsPub = Config. Cache_CommentPub;
                             cacheCommentsPub[ string. Format( "{0}_{1}", this. DetailType, id ) ] = e1. Text;
                             Config. Cache_CommentPub = cacheCommentsPub;

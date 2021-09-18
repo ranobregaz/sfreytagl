@@ -155,6 +155,10 @@ namespace OSChina
         }
         private void icon_Relation_Click(object sender, EventArgs e)
         {
+            if (Tool.CheckLogin("请登陆后再关注", "温馨提示") == false)
+            {
+                return;
+            }
             Dictionary<string, string> parameters = new Dictionary<string, string>
             {
                 {"uid", Config.UID.ToString()},
