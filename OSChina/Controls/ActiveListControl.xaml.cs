@@ -21,6 +21,7 @@ namespace OSChina. Controls
         /// ListBox辅助对象
         /// </summary>
         public ListBoxHelper listBoxHelper { get; private set; }
+        private bool isLoaded { get; set; }
 
         /// <summary>
         /// 此动态页的动态类型
@@ -70,14 +71,13 @@ namespace OSChina. Controls
         {
             InitializeComponent( );
             this. Loaded += (s, e) =>
+            {
+                if (!this.isLoaded)
                 {
-                    this. listBoxHelper = new ListBoxHelper( this. list_Activies );
-                    this. listBoxHelper. ReloadDelegate += new Action( listBoxHelper_ReloadDelegate );
-                };
-            this. Unloaded += (s, e) =>
-                {
-                    this. listBoxHelper. Clear( );
-                };
+                    this.listBoxHelper = new ListBoxHelper(this.list_Activies);
+                    this.listBoxHelper.ReloadDelegate += new Action(listBoxHelper_ReloadDelegate);
+                }
+            };
         }
 
         #endregion
@@ -171,6 +171,7 @@ namespace OSChina. Controls
                     }
                 }
             };
+            this.isLoaded = true;
         }
 
         /// <summary>
@@ -287,6 +288,13 @@ namespace OSChina. Controls
             }
         }
 
+        /// <summary>
+        /// 后退前清理资源
+        /// </summary>
+        public void BackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            this.listBoxHelper.Clear();
+        }
         #endregion
     }
 }

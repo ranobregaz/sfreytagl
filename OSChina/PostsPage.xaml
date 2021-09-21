@@ -37,7 +37,6 @@
     <!--演示 ApplicationBar 用法的示例代码-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" Mode="Minimized" Opacity="0.75" IsMenuEnabled="False">
-            <shell:ApplicationBarIconButton x:Name="icon_Back" IconUri="/Resource/MB_0023_home2.png" Text="首页" Click="icon_Back_Click"/>
             <shell:ApplicationBarIconButton x:Name="icon_Refresh" IconUri="/Resource/appbar.refresh.rest.png" Text="刷新" Click="icon_Refresh_Click"/>
             <shell:ApplicationBarIconButton x:Name="icon_Post" IconUri="/Resource/appbar.questionmark.rest.png" Text="提问" Click="icon_Post_Click" />
         </shell:ApplicationBar>

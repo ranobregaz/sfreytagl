@@ -21,6 +21,7 @@ namespace OSChina. Controls
         /// ListBox辅助对象
         /// </summary>
         public ListBoxHelper listBoxHelper { get; private set; }
+        private bool isLoaded { get; set; }
 
         /// <summary>
         /// 问答类型 0表示获取所有帖子  1 -- 问答 2 -- 分享 3 -- 综合 4 -- 职业 5 -- 站务
@@ -42,16 +43,14 @@ namespace OSChina. Controls
             this. catalog = 1;
             InitializeComponent( );
             this. Loaded += (s, e) =>
+            {
+                if (!this.isLoaded)
                 {
-                    this. listBoxHelper = new ListBoxHelper( this. list_Posts );
-                    this. listBoxHelper. ReloadDelegate += new Action( listBoxHelper_ReloadDelegate );
-                    this. listBoxHelper_ReloadDelegate( );
-                };
-         
-            this. Unloaded += (s, e) =>
-                {
-                    this. listBoxHelper. Clear( );
-                };
+                    this.listBoxHelper = new ListBoxHelper(this.list_Posts);
+                    this.listBoxHelper.ReloadDelegate += new Action(listBoxHelper_ReloadDelegate);
+                    this.listBoxHelper_ReloadDelegate();
+                }
+            };
         }
 
         #endregion
@@ -145,6 +144,7 @@ namespace OSChina. Controls
                     }
                 }
             };
+            this.isLoaded = true;
         }
 
         /// <summary>
@@ -172,6 +172,14 @@ namespace OSChina. Controls
                 Tool. ToUserPage( p. authorID );
                 e. Handled = true;
             }
+        }
+
+        /// <summary>
+        /// 后退前清理资源
+        /// </summary>
+        public void BackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            this.listBoxHelper.Clear();
         }
         #endregion
     }

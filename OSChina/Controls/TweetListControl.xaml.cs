@@ -68,12 +68,6 @@ namespace OSChina. Controls
                     this.listBoxHelper.ReloadDelegate += new Action(listBoxHelper_ReloadDelegate);
                 }
             };
-            /*
-            this. Unloaded += (s, e) =>
-            {
-                System.Diagnostics.Debug.WriteLine("Control_Unloaded");
-                //this. listBoxHelper. Clear( );
-            };*/
         }
 
         #endregion
