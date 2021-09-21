@@ -20,15 +20,18 @@ namespace OSChina
         #region Construct
         public TweetsPage( )
         {
+            System.Diagnostics.Debug.WriteLine("Page_Init");
             InitializeComponent( );
             this. Loaded += (s, e) =>
-                {
-                        this. tweetListControl. listBoxHelper_ReloadDelegate( );
-                };
+            {
+                System.Diagnostics.Debug.WriteLine("Page_Loaded");
+                this. tweetListControl. listBoxHelper_ReloadDelegate( );
+            };
         }
 
         protected override void OnNavigatedTo(System. Windows. Navigation. NavigationEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("Page_OnNavigatedTo");
             if ( this.NavigationContext.QueryString.ContainsKey("tag") )
             {
                 switch ( this.NavigationContext.QueryString["tag"] )
@@ -56,12 +59,14 @@ namespace OSChina
         #region Private functions
         protected override void OnNavigatedFrom(System. Windows. Navigation. NavigationEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("Page_OnNavigatedFrom");
             GC. Collect( );
             base. OnNavigatedFrom( e );
         }
 
         private void icon_Refresh_Click(object sender, EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("Page_icon_Refresh_Click");
             if ( this.IsEnabled )
             {
                 this. tweetListControl. Refresh( );
@@ -70,6 +75,7 @@ namespace OSChina
 
         private void icon_Tweet_Click(object sender, EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("Page_icon_Tweet_Click");
             if ( this.IsEnabled && Tool. CheckLogin( ) )
             {
                 Tool. To( "/PubTweetPage.xaml" );

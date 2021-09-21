@@ -293,9 +293,12 @@ namespace OSChina
         }
         private void panelLogout_MouseLeftButtonUp(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            Config.Cookie = null;
-            EventSingleton.Instance.RaiseLoginOrLogout();
-            MessageBox.Show("您的账户注销成功", "温馨提示", MessageBoxButton.OK);
+            if (MessageBox.Show("即将注销您现在登录的账户", "温馨提示", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                Config.Cookie = null;
+                EventSingleton.Instance.RaiseLoginOrLogout();
+                MessageBox.Show("您的账户注销成功", "温馨提示", MessageBoxButton.OK);
+            }
         }
         #endregion
 

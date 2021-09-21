@@ -35,6 +35,7 @@ namespace OSChina
         #region Construct
         public DetailPage2( )
         {
+            System.Diagnostics.Debug.WriteLine("DetailPage2_Init");
             InitializeComponent( );
             this. browser. NavigateToString( ControlHelper. ConvertExtendedASCII( string. Format( "<div style='font-size:100px;text-align:center;'>正在加载 . . .</div>" ) ) );
             //点击网页链接的处理
@@ -89,6 +90,7 @@ namespace OSChina
              * 因为所有的 文章详情都是 httpGet 操作，所以传递的 e.uri 我们拆分出 uri 就可以获取数据了
              * 当然还需要 type 参数代表文章的类型 这个用于 xml 反序列化的结果分析
              */
+            System.Diagnostics.Debug.WriteLine("DetailPage2_OnNavigatedTo");
             if ( this. NavigationContext. QueryString. ContainsKey( "id" ) && this. NavigationContext. QueryString. ContainsKey( "type" ) )
             {
                 this. DetailType = ( DetailType ) this. NavigationContext. QueryString[ "type" ]. ToInt32( );
@@ -130,6 +132,7 @@ namespace OSChina
 
         protected override void OnNavigatedFrom(System. Windows. Navigation. NavigationEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("DetailPage2_OnNavigatedFrom");
             GC. Collect();
             base. OnNavigatedFrom( e );
         }
