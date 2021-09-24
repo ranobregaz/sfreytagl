@@ -2035,7 +2035,26 @@ namespace OSChina
         {
             WriteableBitmap wb = new WriteableBitmap( g_bmp );
             MemoryStream g_MS = new MemoryStream( );
-            System. Windows. Media. Imaging. Extensions. SaveJpeg( wb, g_MS, 800, 640, 0, 82 );
+            if ((wb.PixelWidth > 800 || wb.PixelHeight > 640) && wb.PixelWidth != 0 && wb.PixelHeight != 0)
+            {
+                double pixelScale = (double)wb.PixelWidth / (double)wb.PixelHeight;
+                int width = 0,height=0;
+                if (wb.PixelWidth > 800)
+                {
+                    width = 800;
+                    height = (int)Math.Round((800 / pixelScale),0);
+                }
+                else
+                {
+                    height = 640;
+                    width = (int)Math.Round((640 * pixelScale), 0);
+                }
+                System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, g_MS, width, height, 0, 82);
+            }
+            else
+            {
+                System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, g_MS, wb.PixelWidth, wb.PixelHeight, 0, 82);
+            }
             g_MS. Seek( 0, SeekOrigin. Begin );
             return g_MS;
         }
