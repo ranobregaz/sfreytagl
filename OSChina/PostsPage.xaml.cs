@@ -101,21 +101,6 @@ namespace OSChina
                 Tool. To( "/PubPostPage.xaml" );
             }
         }
-
-        private void icon_Back_Click(object sender, EventArgs e)
-        {
-            if ( this. postsControl. tag. IsNotNullOrWhitespace( ) )
-            {
-                Tool. To( "/MainPage.xaml" );
-            }
-            else 
-            {
-                if ( this.NavigationService.CanGoBack )
-                {
-                    this. NavigationService. GoBack( );
-                }
-            }
-        }
         #endregion
 
        

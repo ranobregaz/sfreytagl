@@ -42,7 +42,7 @@
 
     <!--演示 ApplicationBar 用法的示例代码-->
     <phone:PhoneApplicationPage.Resources>
-        <!-- 新闻,问答,博客 且 收藏 -->
+        <!-- 新闻,问答,博客 且 未收藏 -->
         <shell:ApplicationBar x:Key="bar_news_favorite" IsVisible="True" IsMenuEnabled="True" Mode="Default"  Opacity="0.9"  ForegroundColor="Black"  BackgroundColor="White">
             <shell:ApplicationBarIconButton x:Name="icon_Pin1" IconUri="/Resource/pushpin.png" Text="订到桌面" Click="icon_Pin1_Click" />
             <shell:ApplicationBarIconButton x:Name="icon_Favorite1" IconUri="/Resource/appbar.favs.addto.rest.png" Text="收藏此文" Click="icon_Favorite1_Click" />

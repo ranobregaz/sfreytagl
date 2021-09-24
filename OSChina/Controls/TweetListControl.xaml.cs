@@ -22,6 +22,7 @@ namespace OSChina. Controls
         /// ListBox辅助对象
         /// </summary>
         public ListBoxHelper listBoxHelper { get; private set; }
+        private bool isLoaded { get; set; }
         
         /// <summary>
         /// 动弹类型
@@ -56,16 +57,16 @@ namespace OSChina. Controls
         /// </summary>
         public TweetListControl( )
         {
+            System.Diagnostics.Debug.WriteLine("Control_Init");
             InitializeComponent( );
             this. Loaded += (s, e) =>
-                {
-                    this. listBoxHelper = new ListBoxHelper( this. list_Tweets );
-                    this. listBoxHelper. ReloadDelegate += new Action( listBoxHelper_ReloadDelegate );
-                };
-            
-            this. Unloaded += (s, e) =>
             {
-                this. listBoxHelper. Clear( );
+                System.Diagnostics.Debug.WriteLine("Control_Loaded");
+                if (!this.isLoaded)
+                {
+                    this.listBoxHelper = new ListBoxHelper(this.list_Tweets);
+                    this.listBoxHelper.ReloadDelegate += new Action(listBoxHelper_ReloadDelegate);
+                }
             };
         }
 
@@ -77,6 +78,7 @@ namespace OSChina. Controls
         /// </summary>
         public void Refresh( )
         {
+            System.Diagnostics.Debug.WriteLine("Control_Refresh");
             //记住现有的 id 集合
             this. listBoxHelper. ids4Refresh = Tool. GetIDS_ID<TweetUnit>( this. listBoxHelper. datas ). Take( 20 ). ToList( );
             this. listBoxHelper. Refresh( );
@@ -87,7 +89,8 @@ namespace OSChina. Controls
         /// </summary>
         public void listBoxHelper_ReloadDelegate( )
         {
-            if ( this. listBoxHelper. isLoading == true )
+            System.Diagnostics.Debug.WriteLine("Control_ReloadDelegate");
+            if ( this. listBoxHelper. isLoading == true)
             {
                 return;
             }
@@ -161,6 +164,7 @@ namespace OSChina. Controls
                         this. listBoxHelper. datas. Add( this. listBoxHelper. GetLoadTip );
                     }
                 }
+                this.isLoaded = true;
             };
         }
 
@@ -236,11 +240,15 @@ namespace OSChina. Controls
         /// </summary>
         public void BackKeyPress(System. ComponentModel. CancelEventArgs e)
         {
-            if ( this.pop != null && this.pop.pop.IsOpen )
+            if (this.pop != null && this.pop.pop.IsOpen)
             {
-                this. pop. pop. IsOpen = false;
-                this. IsEnabled = true;
-                e. Cancel = true;
+                this.pop.pop.IsOpen = false;
+                this.IsEnabled = true;
+                e.Cancel = true;
+            }
+            else
+            {
+                this.listBoxHelper.Clear();
             }
         }
 
