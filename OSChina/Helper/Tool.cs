@@ -2033,29 +2033,44 @@ namespace OSChina
         #region 图像处理
         public static Stream ReduceSize(BitmapImage g_bmp)
         {
-            WriteableBitmap wb = new WriteableBitmap( g_bmp );
-            MemoryStream g_MS = new MemoryStream( );
-            if ((wb.PixelWidth > 800 || wb.PixelHeight > 640) && wb.PixelWidth != 0 && wb.PixelHeight != 0)
+            WriteableBitmap wb = new WriteableBitmap(g_bmp);
+            MemoryStream g_MS = new MemoryStream();
+            int width = wb.PixelWidth;
+            int height = wb.PixelHeight;
+
+            if ((width > 1000 || height > 1000) && width > 0 && height > 0)
             {
-                double pixelScale = (double)wb.PixelWidth / (double)wb.PixelHeight;
-                int width = 0,height=0;
-                if (wb.PixelWidth > 800)
+                double pixelScale = (double)width / (double)height;
+                if (width > height)//要按比例计算后对比,这里比例是1(1000/1000),就不写了,同学们一定要注意
                 {
-                    width = 800;
-                    height = (int)Math.Round((800 / pixelScale),0);
+                    width = 1000;
+                    height = (int)Math.Round(((double)width / pixelScale), 0);
                 }
                 else
                 {
-                    height = 640;
-                    width = (int)Math.Round((640 * pixelScale), 0);
+                    height = 1000;
+                    width = (int)Math.Round(((double)height * pixelScale), 0);
+                }
+            }
+            System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, g_MS, width, height, 0, 82);
+
+            if (g_MS.Length > 200*1024)
+            {
+                double sizeScale = 188.8 * 1024.0 / (double)g_MS.Length;//保守点计算
+                if (width > height)
+                {
+                    width = (int)Math.Round((double)width * sizeScale);
+                    height = (int)Math.Round(((double)width / sizeScale), 0);
+                }
+                else
+                {
+                    height = (int)Math.Round((double)height * sizeScale);
+                    width = (int)Math.Round(((double)height * sizeScale), 0);
                 }
                 System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, g_MS, width, height, 0, 82);
             }
-            else
-            {
-                System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, g_MS, wb.PixelWidth, wb.PixelHeight, 0, 82);
-            }
-            g_MS. Seek( 0, SeekOrigin. Begin );
+
+            g_MS.Seek(0, SeekOrigin.Begin);
             return g_MS;
         }
         #endregion
