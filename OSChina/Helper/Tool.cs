@@ -2054,9 +2054,10 @@ namespace OSChina
             }
             System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, g_MS, width, height, 0, 82);
 
-            if (g_MS.Length > 200*1024)
+            byte[] byteArray = g_MS.ToArray();
+            if (byteArray.Length >= 200 * 1024)
             {
-                double sizeScale = 188.8 * 1024.0 / (double)g_MS.Length;//保守点计算
+                double sizeScale = 188.88 * 1024.0 / (double)g_MS.Length;//保守点计算,图片的属性会占一定存储空间~
                 if (width > height)
                 {
                     width = (int)Math.Round((double)width * sizeScale);
