@@ -2040,6 +2040,7 @@ namespace OSChina
                 Size pixelSize = new Size(wb.PixelWidth, wb.PixelHeight);
                 pixelSize = pixelSize.ComputeUniformSize(Config.ImageMaxSize, Config.ImageMinScale);
                 System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, g_MS, (int)Math.Round(Math.Max(1, pixelSize.Width), 0), (int)Math.Round(Math.Max(1, pixelSize.Height), 0), 0, 82);
+                g_MS.Seek(0, SeekOrigin.Begin);
                 byte[] byteArray = g_MS.GetBuffer();
                 int imageLength = byteArray.Length;
                 if (imageLength > 0 && imageLength >= (200 * 1024))
