@@ -2033,46 +2033,72 @@ namespace OSChina
         #region 图像处理
         public static Stream ReduceSize(BitmapImage g_bmp)
         {
-            WriteableBitmap wb = new WriteableBitmap(g_bmp);
             MemoryStream g_MS = new MemoryStream();
-            int width = wb.PixelWidth;
-            int height = wb.PixelHeight;
-
-            if ((width > 1000 || height > 1000) && width > 0 && height > 0)
+            if (null != g_bmp)
             {
-                double pixelScale = (double)width / (double)height;
-                if (width > height)//要按比例计算后对比,这里比例是1(1000/1000),就不写了,同学们一定要注意
+                WriteableBitmap wb = new WriteableBitmap(g_bmp);
+                Size pixelSize = new Size(wb.PixelWidth, wb.PixelHeight);
+                pixelSize = pixelSize.ComputeUniformSize(Config.ImageMaxSize, Config.ImageMinScale);
+                System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, g_MS, (int)Math.Round(Math.Max(1, pixelSize.Width), 0), (int)Math.Round(Math.Max(1, pixelSize.Height), 0), 0, 82);
+                byte[] byteArray = g_MS.GetBuffer();
+                int imageLength = byteArray.Length;
+                if (imageLength > 0 && imageLength >= (200 * 1024))
                 {
-                    width = 1000;
-                    height = (int)Math.Round(((double)width / pixelScale), 0);
+                    double zoom = 188.88 * 1024.0 / (double)g_MS.Length;//保守点计算
+                    pixelSize.ComputeUniformSize(zoom);
+                    System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, g_MS, (int)Math.Round(Math.Max(1, pixelSize.Width), 0), (int)Math.Round(Math.Max(1, pixelSize.Height), 0), 0, 82);
                 }
-                else
-                {
-                    height = 1000;
-                    width = (int)Math.Round(((double)height * pixelScale), 0);
-                }
+                g_MS.Seek(0, SeekOrigin.Begin);
             }
-            System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, g_MS, width, height, 0, 82);
-
-            byte[] byteArray = g_MS.ToArray();
-            if (byteArray.Length >= 200 * 1024)
-            {
-                double sizeScale = 188.88 * 1024.0 / (double)g_MS.Length;//保守点计算,图片的属性会占一定存储空间~
-                if (width > height)
-                {
-                    width = (int)Math.Round((double)width * sizeScale);
-                    height = (int)Math.Round(((double)width / sizeScale), 0);
-                }
-                else
-                {
-                    height = (int)Math.Round((double)height * sizeScale);
-                    width = (int)Math.Round(((double)height * sizeScale), 0);
-                }
-                System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, g_MS, width, height, 0, 82);
-            }
-
-            g_MS.Seek(0, SeekOrigin.Begin);
             return g_MS;
+        }
+        
+
+        /// <summary>
+        /// 将 <paramref name="src"/> 的大小向 <paramref name="target"/> 大小进行适应性调整。
+        /// </summary>
+        /// <param name="src">原大小</param>
+        /// <param name="target">目标大小</param>
+        /// <param name="minScale">最小比例</param>
+        /// <returns>最佳的调整值。</returns>
+        static Size ComputeUniformSize(this Size src, Size target, double minScale)
+        {
+            Size result = new Size(target.Width, target.Height);
+            if (src.Width > target.Width || src.Height > target.Height)
+            {
+                double ndh = Math.Max(1, target.Height);
+                double d = target.Width / ndh;//目标大小 宽高比。
+                d = Math.Max(d, minScale);
+                double nsh = Math.Max(1, src.Height);
+                double s = src.Width / nsh;//条件大小 宽高比。
+                s = Math.Max(s, minScale);
+                if (s > d)//太“宽”了。
+                {
+                    result.Height = target.Width / s;
+                }
+                else //太“高”了或相似。
+                {
+                    result.Width = target.Height * s;
+                }
+            }
+            else
+            {
+                result = src;
+            }
+            return result;
+        }
+
+        /// <summary>
+        ///将 <paramref name="src"/> 的大小向 <paramref name="zoom"/> 的比例进行调整
+        /// </summary>
+        /// <param name="src">原大小</param>
+        /// <param name="zoom">缩放倍数</param>
+        /// <returns>调整后的大小</returns>
+        private static Size ComputeUniformSize(this Size src, double zoom)
+        {
+            src.Height = src.Height * zoom;
+            src.Width = src.Width * zoom;
+            return src;
         }
         #endregion
     }
