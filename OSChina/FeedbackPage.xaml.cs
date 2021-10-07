@@ -63,8 +63,9 @@ namespace OSChina
 
         private void btnCheckVersion_Click(object sender, RoutedEventArgs e)
         {
-            //检测更新
-            Tool. CheckVersionNeedUpdate( "http://www.oschina.net/MobileAppVersion.xml" );
+            //检测更新,直接跳转到商店查看是否有更新
+            MarketplaceDetailTask task = new MarketplaceDetailTask { };
+            task.Show();
         }
         #endregion
     }

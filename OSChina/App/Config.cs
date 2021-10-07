@@ -13,6 +13,7 @@ using System. IO. IsolatedStorage;
 using Microsoft. Phone. Info;
 using Microsoft. Phone. Shell;
 using OSChina. Model;
+using System.Windows;
 
 namespace OSChina
 {
@@ -560,9 +561,10 @@ namespace OSChina
         /// <summary>
         /// App 版本号
         /// </summary>
+        private static Version _appVersion = new System.Reflection.AssemblyName(System.Reflection.Assembly.GetExecutingAssembly().FullName).Version;
         public static Version AppVersion
         {
-            get { return new System.Reflection.AssemblyName(System.Reflection.Assembly.GetExecutingAssembly().FullName).Version; }
+            get { return _appVersion; }
         }
 
         /// <summary>
@@ -582,6 +584,25 @@ namespace OSChina
         /// 检测滚动落差值
         /// </summary>
         public const double ScrollBarOffset = 2;
+
+        /// <summary>
+        /// 图片字节最大值
+        /// </summary>
+        public const int ImageMaxByte = 200*1024;
+
+        /// <summary>
+        /// 图片像素最大边界
+        /// </summary>
+        private static Size _imageMaxSize = new Size(800, 640);
+        public static Size ImageMaxSize
+        {
+            get { return _imageMaxSize; }
+        }
+
+        /// <summary>
+        /// 图片最小比例
+        /// </summary>
+        public const double ImageMinScale = 0.001;
 
         #endregion
     }

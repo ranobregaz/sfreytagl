@@ -68,25 +68,25 @@ namespace OSChina
         #region 底部按钮事件
         private void iconCamera_Click(object sender, EventArgs e)
         {
-            CameraCaptureTask task = new CameraCaptureTask( );
-            Config. Cache_TweetPic = null;
-            task. Completed += (s, e1) =>
+            CameraCaptureTask task = new CameraCaptureTask();
+            BitmapImage g_bmp = new BitmapImage();
+            Config.Cache_TweetPic = null;
+            g_bmp.UriSource = null;
+            this.img.Source = null;
+            task.Completed += (s, e1) =>
+            {
+                if (e1.ChosenPhoto != null)
                 {
-                    if ( e1. ChosenPhoto != null )
-                    {
-                        BitmapImage bmpSource = new BitmapImage( );
-                        bmpSource. SetSource( e1. ChosenPhoto );
-                        this. img. Source = bmpSource;
-                        BitmapImage g_bmp = new BitmapImage( );
-                        g_bmp. CreateOptions = BitmapCreateOptions. DelayCreation;
-                        g_bmp. SetSource( e1. ChosenPhoto );
-                        g_stream = Tool. ReduceSize( g_bmp );
-                        Config. Cache_TweetPic = g_stream;
-                    }
-                };
+                    g_bmp.CreateOptions = BitmapCreateOptions.DelayCreation;
+                    g_bmp.SetSource(e1.ChosenPhoto);
+                    this.img.Source = g_bmp;
+                    g_stream = Tool.ReduceSize(g_bmp);
+                    Config.Cache_TweetPic = g_stream;
+                }
+            };
             try
             {
-                task. Show( );
+                task.Show();
             }
             catch { }
         }
@@ -99,28 +99,29 @@ namespace OSChina
                 //PixelHeight = 512,
                 ShowCamera = true,
             };
-            Config. Cache_TweetPic = null;
-            task. Completed += (s, e1) =>
+            BitmapImage g_bmp = new BitmapImage();
+            Config.Cache_TweetPic = null;
+            g_bmp.UriSource = null;
+            this.img.Source = null;
+            GC.Collect();
+            task.Completed += (s, e1) =>
             {
-                if ( e1. ChosenPhoto != null )
+                if (e1.ChosenPhoto != null)
                 {
-                    BitmapImage bmpSource = new BitmapImage( );
-                    bmpSource. SetSource( e1. ChosenPhoto );
-                    this. img. Source = bmpSource;
-                    BitmapImage g_bmp = new BitmapImage( );
-                    g_bmp. CreateOptions = BitmapCreateOptions. DelayCreation;
-                    g_bmp. SetSource( e1. ChosenPhoto );
-                    g_stream = Tool. ReduceSize( g_bmp );
-                    Config. Cache_TweetPic = g_stream;
+                    g_bmp.CreateOptions = BitmapCreateOptions.DelayCreation;
+                    g_bmp.SetSource(e1.ChosenPhoto);
+                    this.img.Source = g_bmp;
+                    g_stream = Tool.ReduceSize(g_bmp);
+                    Config.Cache_TweetPic = g_stream;
                 }
             };
             try
             {
-                task. Show( );
+                task.Show();
             }
             catch (Exception ex)
             {
-                System. Diagnostics. Debug. WriteLine( ex. Message );
+                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
             finally
             {
