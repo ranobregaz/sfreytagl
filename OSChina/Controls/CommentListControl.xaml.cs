@@ -189,9 +189,20 @@ namespace OSChina. Controls
                         IsSubmitOnEnterKey = false,
                         Value = Config. GetCache_CommentReply( this. id, c. id ),
                     };
-                    input. OnValueChanged += (s, e1) =>
+                    input.OnValueChanged += (s, e1) =>
                     {
-                        Config. SaveCache_CommentReply( e1. Text, this. id, c. id );
+                        try
+                        {
+                            InputPrompt inputSender = s as InputPrompt;
+                            if (inputSender != null && inputSender.InputBox.TextWrapping == TextWrapping.NoWrap)
+                            {
+                                inputSender.InputBox.TextWrapping = TextWrapping.Wrap;
+                                inputSender.InputBox.AcceptsReturn = true;
+                                inputSender.InputBox.VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Visible;
+                            }
+                        }
+                        catch { }
+                        Config.SaveCache_CommentReply(e1.Text, this.id, c.id);
                     };
                     input. Completed += (s, e1) =>
                     {
