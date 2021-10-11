@@ -314,15 +314,15 @@ namespace OSChina
                         {
                             try
                             {
-                                InputPrompt inputSender = ((InputPrompt)s);
-                                if (inputSender.InputBox.TextWrapping == TextWrapping.NoWrap)
+                                InputPrompt inputSender = s as InputPrompt;
+                                if (inputSender != null && inputSender.InputBox.TextWrapping == TextWrapping.NoWrap)
                                 {
                                     inputSender.InputBox.TextWrapping = TextWrapping.Wrap;
                                     inputSender.InputBox.AcceptsReturn = true;
                                     inputSender.InputBox.VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Visible;
                                 }
                             }
-                            catch{}
+                            catch { }
                             Dictionary<string, string> cacheCommentsPub = Config. Cache_CommentPub;
                             cacheCommentsPub[ string. Format( "{0}_{1}", this. DetailType, id ) ] = e1. Text;
                             Config. Cache_CommentPub = cacheCommentsPub;
