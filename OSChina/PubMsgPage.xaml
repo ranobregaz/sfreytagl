@@ -37,7 +37,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock Name="lblTitle" TextWrapping="Wrap" Margin="12,0,0,0" Width="480"  />
-            <water:WatermarkedTextBox Name="txtContent" AcceptsReturn="True" Height="160" Grid.Row="1"  TextChanged="txtContent_TextChanged" Watermark="留言内容(最多250字)" MaxLength="250" />
+            <water:WatermarkedTextBox Name="txtContent" TextWrapping="Wrap" AcceptsReturn="True" Height="160" Grid.Row="1"  TextChanged="txtContent_TextChanged" Watermark="留言内容(最多250字)" MaxLength="250" />
         </Grid>
     </Grid>
  

@@ -23,6 +23,7 @@ namespace OSChina
     {
         #region Properties
         private DetailType DetailType { get; set; }
+        private bool isLoaded { get; set; }
         private NewsDetail newsDetail;
         private PostDetail postDetail;
         private BlogDetail blogDetail;
@@ -33,55 +34,58 @@ namespace OSChina
         #endregion
 
         #region Construct
-        public DetailPage2( )
+        public DetailPage2()
         {
             System.Diagnostics.Debug.WriteLine("DetailPage2_Init");
-            InitializeComponent( );
-            this. browser. NavigateToString( ControlHelper. ConvertExtendedASCII( string. Format( "<div style='font-size:100px;text-align:center;'>正在加载 . . .</div>" ) ) );
-            //点击网页链接的处理
-            this. browser. Navigating += new EventHandler<NavigatingEventArgs>( (s, e) =>
-                {
-                    if ( e.Uri.AbsoluteUri.StartsWith("http://www.oschina.net/search?scope=bbs&q=", StringComparison.CurrentCulture) )
+            InitializeComponent();
+            if (!this.isLoaded)
+            {
+                this.browser.NavigateToString(ControlHelper.ConvertExtendedASCII(string.Format("<div style='font-size:100px;text-align:center;'>正在加载 . . .</div>")));
+                //点击网页链接的处理
+                this.browser.Navigating += new EventHandler<NavigatingEventArgs>((s, e) =>
                     {
-                        return;
-                    }
-                    switch ( e. Uri. AbsoluteUri )
-                    {
-                        case "http://www.wangjuntom.com/":
-                            if ( this. NavigationService. BackStack. Select( b => b. Source. OriginalString. Contains( "DetailPage2.xaml" ) ).Count() > 1 )
-                            {
-                                Tool. To( "/MainPage.xaml" );
-                            }
-                            else
-                            {
-                                if ( this. NavigationService. CanGoBack )
+                        if (e.Uri.AbsoluteUri.StartsWith("http://www.oschina.net/search?scope=bbs&q=", StringComparison.CurrentCulture))
+                        {
+                            return;
+                        }
+                        switch (e.Uri.AbsoluteUri)
+                        {
+                            case "http://www.wangjuntom.com/":
+                                if (this.NavigationService.BackStack.Select(b => b.Source.OriginalString.Contains("DetailPage2.xaml")).Count() > 1)
                                 {
-                                    this. NavigationService. GoBack( );
+                                    Tool.To("/MainPage.xaml");
                                 }
                                 else
                                 {
-                                    Tool. To( "/MainPage.xaml" );
+                                    if (this.NavigationService.CanGoBack)
+                                    {
+                                        this.NavigationService.GoBack();
+                                    }
+                                    else
+                                    {
+                                        Tool.To("/MainPage.xaml");
+                                    }
                                 }
-                            }
-                            e. Cancel = true;
-                            break;
-                        //大图展示
-                        case "http://www.wangjuntomtweetimg.com/":
-                            //查看大图
-                            this. pop = new PopUpImage( );
-                            this. pop. Create( this. tweetDetail. imBig, 730 );
-                            this. IsEnabled = false;
-                            this. pop. pop. Closed += (s1, e1) =>
-                            {
-                                this. IsEnabled = true;
-                            };
-                            e. Cancel = true;
-                            break;
-                        default:
-                            Tool. ProcessAppLink( e. Uri. AbsoluteUri );
-                            break;
-                    }
-                } );
+                                e.Cancel = true;
+                                break;
+                            //大图展示
+                            case "http://www.wangjuntomtweetimg.com/":
+                                //查看大图
+                                this.pop = new PopUpImage();
+                                this.pop.Create(this.tweetDetail.imBig, 730);
+                                this.IsEnabled = false;
+                                this.pop.pop.Closed += (s1, e1) =>
+                                {
+                                    this.IsEnabled = true;
+                                };
+                                e.Cancel = true;
+                                break;
+                            default:
+                                Tool.ProcessAppLink(e.Uri.AbsoluteUri);
+                                break;
+                        }
+                    });
+            }
         }
 
         protected override void OnNavigatedTo(System. Windows. Navigation. NavigationEventArgs e)
@@ -91,7 +95,7 @@ namespace OSChina
              * 当然还需要 type 参数代表文章的类型 这个用于 xml 反序列化的结果分析
              */
             System.Diagnostics.Debug.WriteLine("DetailPage2_OnNavigatedTo");
-            if ( this. NavigationContext. QueryString. ContainsKey( "id" ) && this. NavigationContext. QueryString. ContainsKey( "type" ) )
+            if (this.NavigationContext.QueryString.ContainsKey("id") && this.NavigationContext.QueryString.ContainsKey("type") && (!this.isLoaded) )
             {
                 this. DetailType = ( DetailType ) this. NavigationContext. QueryString[ "type" ]. ToInt32( );
                 //如果是软件类型 则去除掉一些东西
@@ -118,6 +122,7 @@ namespace OSChina
         #region Private functions
         protected override void OnBackKeyPress(System. ComponentModel. CancelEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("DetailPage2_OnBackKeyPress");
             if ( this. pop != null && this. pop. pop. IsOpen )
             {
                 this. pop. pop. IsOpen = false;
@@ -142,6 +147,7 @@ namespace OSChina
         /// </summary>
         private void DownloadDocument(string uri)
         {
+            System.Diagnostics.Debug.WriteLine("DetailPage2_DownloadDocument");
             WebClient proxy = Tool. SendWebClient( uri, new Dictionary<string, string>( ) );
             proxy. DownloadStringCompleted += (s, e) =>
                 {
@@ -220,6 +226,7 @@ namespace OSChina
                         };
                     break;
             }
+            this.isLoaded = true;
             GC. Collect( );
         }
 
@@ -229,6 +236,7 @@ namespace OSChina
         /// <param name="id">评论的id</param>
         private void DownloadComments( int id )
         {
+            System.Diagnostics.Debug.WriteLine("DetailPage2_DownloadComments");
             this. commentListControl. id = id;
             switch ( this.DetailType )
             {
