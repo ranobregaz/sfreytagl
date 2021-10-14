@@ -2064,7 +2064,7 @@ namespace OSChina
         /// <returns>最佳的调整值。</returns>
         static Size ComputeUniformSize(this Size src, Size target, double minScale)
         {
-            Size result = new Size(target.Width, target.Height);
+            Size result = target;
             if (src.Width > target.Width || src.Height > target.Height)
             {
                 double ndh = Math.Max(1, target.Height);
