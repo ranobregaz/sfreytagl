@@ -28,6 +28,7 @@ using OSChina. Model. AppOnly;
 using WP7_ControlsLib. Controls;
 using WP7_WebLib. HttpGet;
 using WP7_WebLib. HttpPost;
+using OSChinaScheduledTask_Notice;
 
 namespace OSChina
 {
@@ -678,36 +679,46 @@ namespace OSChina
             }
         }
 
+        private static ScheduledAgent scheduledAgent = new ScheduledAgent();
         public static UserNotice GetUserNotice(string response)
         {
+            UserNotice n = null;
+            int atMeCount = 0;
+            int msgCount = 0;
+            int reviewCount = 0;
+            int newFansCount = 0;
             try
             {
-                XElement root = XElement. Parse( response );
-                XElement notice = root. Element( "notice" );
-                if ( notice == null )
+                XElement root = XElement.Parse(response);
+                XElement notice = root.Element("notice");
+                if (notice != null)
                 {
-                    return null;
-                }
-                else
-                {
-                    UserNotice n = new UserNotice
+                    atMeCount = notice.Element("atmeCount").Value.ToInt32();
+                    msgCount = notice.Element("msgCount").Value.ToInt32();
+                    reviewCount = notice.Element("reviewCount").Value.ToInt32();
+                    newFansCount = notice.Element("newFansCount").Value.ToInt32();
+                    n = new UserNotice
                     {
-                        atMeCount = notice. Element( "atmeCount" ). Value. ToInt32( ),
-                        msgCount = notice. Element( "msgCount" ). Value. ToInt32( ),
-                        reviewCount = notice. Element( "reviewCount" ). Value. ToInt32( ),
-                        newFansCount = notice. Element( "newFansCount" ). Value. ToInt32( ),
+                        atMeCount = atMeCount,
+                        msgCount = msgCount,
+                        reviewCount = reviewCount,
+                        newFansCount = newFansCount,
                     };
                     //内部就直接触发事件
-                    EventSingleton. Instance. RaiseGetUserNotice( n );
-                    return n;
+                    EventSingleton.Instance.RaiseGetUserNotice(n);
+                }
+
+                //如果打开后台轮询的话就更新磁贴上的未读消息数
+                if (Config.IsScheduledTask)
+                {
+                    scheduledAgent.UpdateMainTile(atMeCount + msgCount + reviewCount + newFansCount);
                 }
             }
-            catch ( Exception e)
+            catch (Exception e)
             {
-                Debug. WriteLine( "UserNotice 解析错误: {0}", e. Message );
-                return null;
+                Debug.WriteLine("UserNotice 解析错误: {0}", e.Message);
             }
-            
+            return n;
         }
 
         public static SearchUnit[ ] GetSearchList(string response, out int pageSize)
@@ -1767,6 +1778,16 @@ namespace OSChina
             txt. Inlines. Add( new Run { Text = " ", FontSize = 12 } );
             txt. Inlines. Add( new LineBreak( ) );
             txt. Inlines. Add( pubDate );
+        }
+
+        /// <summary>
+        /// 表单中的特殊字符转换
+        /// </summary>
+        /// <param name="sourceTime">原始表单字符串</param>
+        /// <returns>转换后的表单字符串</returns>
+        public static string UrlEncode(string formStr)
+        {
+            return System.Net.HttpUtility.UrlEncode(formStr);
         }
         #endregion
 

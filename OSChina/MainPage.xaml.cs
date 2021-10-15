@@ -364,34 +364,6 @@ namespace OSChina
         {
             Tool.To("/SettingPage.xaml");
         }
-        #endregion
-
-        #region Back键处理
-        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
-        {
-            if (Config.IsNoticeExit)
-            {
-                if (this.NavigationService.CanGoBack == false)
-                {
-                    if (MessageBox.Show("您确认要退出 OSChina 客户端吗?", "温馨提示", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-                    {
-                        base.OnBackKeyPress(e);
-                    }
-                    else
-                    {
-                        e.Cancel = true;
-                    }
-                }
-                base.OnBackKeyPress(e);
-            }
-            else
-            {
-                base.OnBackKeyPress(e);
-            }
-        }
-
-        #endregion
-
         private void menu_Portrait_Click(object sender, EventArgs e)
         {
             if (Tool.CheckLogin("请登陆后更新您的头像", "温馨提示") == false)
@@ -439,5 +411,33 @@ namespace OSChina
         {
             Tool.To("/ScanCode.xaml");
         }
+        #endregion
+
+        #region Back键处理
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (Config.IsNoticeExit)
+            {
+                if (this.NavigationService.CanGoBack == false)
+                {
+                    if (MessageBox.Show("您确认要退出 OSChina 客户端吗?", "温馨提示", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    {
+                        base.OnBackKeyPress(e);
+                    }
+                    else
+                    {
+                        e.Cancel = true;
+                    }
+                }
+                base.OnBackKeyPress(e);
+            }
+            else
+            {
+                base.OnBackKeyPress(e);
+            }
+        }
+
+        #endregion
+
     }
 }

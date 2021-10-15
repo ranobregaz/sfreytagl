@@ -73,7 +73,7 @@ namespace OSChina
                 {
                     {"uid", Config.UID},
                     {"receiver", this.receiverID},
-                    {"content", content},
+                    {"content", Tool.UrlEncode(content)},
                 };
                 PostClient client = Tool.SendPostClient(Config.api_msg_pub, parameters);
                 client.DownloadStringCompleted += (s, e1) =>

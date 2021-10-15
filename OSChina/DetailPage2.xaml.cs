@@ -356,7 +356,7 @@ namespace OSChina
                                             {"catalog", this.GetPubCommentType},
                                             {"id", id},
                                             {"uid", Config.UID},
-                                            {"content", e1.Result},
+                                            {"content", Tool.UrlEncode(e1.Result)},
                                             //{"isPostToMyZone", this.DetailType == CommentType.Tweet ? ((bool)this.checkResendToZone.IsChecked ? "1" : "0" ): "0"},
                                             {"isPostToMyZone","1"},
                                         };
@@ -367,7 +367,7 @@ namespace OSChina
                                         {
                                             {"blog", id},
                                             {"uid", Config.UID},
-                                            {"content", e1.Result},
+                                            {"content", Tool.UrlEncode(e1.Result)},
                                         };
                                 }
                                 PostClient client = Tool. SendPostClient( this. DetailType == Model. AppOnly. DetailType. Blog ? Config. api_blogcomment_pub : Config. api_comment_pub, parameters );
