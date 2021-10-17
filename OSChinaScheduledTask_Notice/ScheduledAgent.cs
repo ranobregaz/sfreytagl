@@ -67,7 +67,7 @@ namespace OSChinaScheduledTask_Notice
         /// </summary>
         /// <param name="cookie">cookie</param>
         /// <param name="uid">用户uid</param>
-        private void Process_GetNotice(string cookie, string uid)
+        public void Process_GetNotice(string cookie, string uid)
         {
             WebClient client = new WebClient( );
             client. Headers[ "Cookie" ] = cookie;
@@ -100,7 +100,7 @@ namespace OSChinaScheduledTask_Notice
         /// 更新App 的主贴片
         /// </summary>
         /// <param name="noticeCount">通知个数</param>
-        private void UpdateMainTile(int noticeCount)
+        public void UpdateMainTile(int noticeCount)
         {
             var appTile = ShellTile. ActiveTiles. FirstOrDefault( );
             if ( appTile != null )

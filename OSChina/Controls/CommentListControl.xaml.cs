@@ -218,7 +218,7 @@ namespace OSChina. Controls
                                 {"replyid",c.id},
                                 {"authorid", c.authorID},
                                 {"uid",Config.UID},
-                                {"content", e1.Result},
+                                {"content", Tool.UrlEncode(e1.Result)},
                             };
                             }
                             else
@@ -227,7 +227,7 @@ namespace OSChina. Controls
                                     {
                                         {"blog", this.id},
                                         {"uid",Config.UID},
-                                        {"content",e1.Result},
+                                        {"content",Tool.UrlEncode(e1.Result)},
                                         {"reply_id",c.id},
                                         {"objuid",c.authorID},
                                     };

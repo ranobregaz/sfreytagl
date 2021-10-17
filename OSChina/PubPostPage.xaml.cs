@@ -87,7 +87,7 @@ namespace OSChina
                 {"uid", Config.UID},
                 {"title",title},
                 {"catalog", this.pickerPostType.SelectedIndex+1},
-                {"content",content},
+                {"content",Tool.UrlEncode(content)},
                 {"isNoticeMe", (bool)this.checkEmailNoticeMe.IsChecked ? "1" : "0"},
             };
             PostClient client = Tool.SendPostClient(Config.api_post_pub, parameters);

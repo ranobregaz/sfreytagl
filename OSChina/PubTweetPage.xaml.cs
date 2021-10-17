@@ -139,7 +139,7 @@ namespace OSChina
             Dictionary<string, object> parameters = new Dictionary<string, object>
             {
                 {"uid", Config.UID},
-                {"msg", tweet},
+                {"msg", Tool.UrlEncode(tweet)},
             };
             #region 如果不需要传递图片
             this. g_stream = Config. Cache_TweetPic;
