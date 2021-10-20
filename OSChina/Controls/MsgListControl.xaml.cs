@@ -33,7 +33,7 @@ namespace OSChina. Controls
             InitializeComponent( );
             this. Loaded += (s, e) =>
                 {
-                    this. listBoxHelper = new ListBoxHelper( this. list_Msg );
+                    this.listBoxHelper = new ListBoxHelper(this.list_Msg, System.Windows.Media.Colors.Transparent);
                     this. listBoxHelper. ReloadDelegate += new Action( listBoxHelper_ReloadDelegate );
                     this. listBoxHelper_ReloadDelegate( );
                 };

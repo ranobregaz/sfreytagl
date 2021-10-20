@@ -1789,6 +1789,16 @@ namespace OSChina
         {
             return System.Net.HttpUtility.UrlEncode(formStr);
         }
+
+        /// <summary>
+        /// 表单中的特殊字符转换
+        /// </summary>
+        /// <param name="sourceTime">原始表单字符串</param>
+        /// <returns>转换后的表单字符串</returns>
+        public static string UrlDecode(string formStr)
+        {
+            return System.Net.HttpUtility.UrlDecode(formStr);
+        }
         #endregion
 
         #region 订到桌面

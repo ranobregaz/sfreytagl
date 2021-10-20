@@ -51,7 +51,7 @@ namespace OSChina. Controls
             {
 
             };
-            this. listBoxHelper = new ListBoxHelper( this. list_News, true );
+            this. listBoxHelper = new ListBoxHelper( this. list_News, System.Windows.Media.Colors.White ,true);
             this. listBoxHelper. ReloadDelegate += new Action( listBoxHelper_ReloadDelegate );
             this. listBoxHelper_ReloadDelegate( );
         }

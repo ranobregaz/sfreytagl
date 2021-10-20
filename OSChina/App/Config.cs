@@ -586,6 +586,11 @@ namespace OSChina
         public const double ScrollBarOffset = 2;
 
         /// <summary>
+        /// 检测顶部下拉差值
+        /// </summary>
+        public const double PullDownOffset = 150;
+
+        /// <summary>
         /// 图片字节最大值
         /// </summary>
         public const int ImageMaxByte = 200*1024;

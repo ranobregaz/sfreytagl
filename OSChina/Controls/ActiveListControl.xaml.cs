@@ -74,7 +74,7 @@ namespace OSChina. Controls
             {
                 if (!this.isLoaded)
                 {
-                    this.listBoxHelper = new ListBoxHelper(this.list_Activies);
+                    this.listBoxHelper = new ListBoxHelper(this.list_Activies, System.Windows.Media.Colors.Transparent);
                     this.listBoxHelper.ReloadDelegate += new Action(listBoxHelper_ReloadDelegate);
                 }
             };
