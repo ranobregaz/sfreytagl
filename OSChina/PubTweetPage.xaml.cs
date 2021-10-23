@@ -136,10 +136,11 @@ namespace OSChina
                 MessageBox. Show( "动弹内容请不要为空" );
                 return;
             }
+            tweet = (this.g_stream == null) ? Tool.UrlEncode(tweet) : tweet;
             Dictionary<string, object> parameters = new Dictionary<string, object>
             {
                 {"uid", Config.UID},
-                {"msg", Tool.UrlEncode(tweet)},
+                {"msg", tweet},
             };
             #region 如果不需要传递图片
             this. g_stream = Config. Cache_TweetPic;

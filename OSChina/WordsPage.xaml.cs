@@ -29,7 +29,7 @@ namespace OSChina
 
             this. Loaded += (s, e) =>
                 {
-                    this. listBoxHelper = new ListBoxHelper( this. list_Words );
+                    this.listBoxHelper = new ListBoxHelper(this.list_Words, System.Windows.Media.Colors.Transparent);
                     this. listBoxHelper. ReloadDelegate += new Action( listBoxHelper_ReloadDelegate );
                     this. listBoxHelper. Refresh( );
                 };

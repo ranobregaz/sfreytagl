@@ -64,7 +64,7 @@ namespace OSChina. Controls
                 System.Diagnostics.Debug.WriteLine("Control_Loaded");
                 if (!this.isLoaded)
                 {
-                    this.listBoxHelper = new ListBoxHelper(this.list_Tweets);
+                    this.listBoxHelper = new ListBoxHelper(this.list_Tweets, System.Windows.Media.Colors.Transparent,true);
                     this.listBoxHelper.ReloadDelegate += new Action(listBoxHelper_ReloadDelegate);
                 }
             };

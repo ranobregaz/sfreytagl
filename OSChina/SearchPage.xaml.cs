@@ -26,7 +26,7 @@ namespace OSChina
             InitializeComponent( );
             this. Loaded += (s, e) =>
                 {
-                    this. listBoxHelper = new ListBoxHelper( this. list_Result,false, false, false );
+                    this. listBoxHelper = new ListBoxHelper( this. list_Result,System.Windows.Media.Colors.Transparent, false, false );
                     this. listBoxHelper. ReloadDelegate += new Action( listBoxHelper_ReloadDelegate );
                     this. iconSearch_Click( null, null );
                 };

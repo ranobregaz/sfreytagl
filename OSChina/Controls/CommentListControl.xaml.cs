@@ -57,7 +57,7 @@ namespace OSChina. Controls
             InitializeComponent( );
             this. Loaded += (s, e) =>
             {
-                this. listBoxHelper = new ListBoxHelper( this. list_Comment, false, true );
+                this. listBoxHelper = new ListBoxHelper( this. list_Comment, System.Windows.Media.Colors.Black );
                 this. listBoxHelper. ReloadDelegate += new Action( listBoxHelper_ReloadDelegate );
                 this. listBoxHelper_ReloadDelegate( );
             };
