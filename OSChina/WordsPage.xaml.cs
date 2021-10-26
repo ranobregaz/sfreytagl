@@ -128,6 +128,16 @@ namespace OSChina
         {
             Tool. To( string. Format( "/PubMsgPage.xaml?receiverID={0}&receiver={1}", this. friendid, this. friendname ) );
         }
+        private void menu_Copy_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            MenuItem item = sender as MenuItem;
+            CommentUnit c = item.DataContext as CommentUnit;
+            if (c != null)
+            {
+                Tool.Copy2Clipboard(c.content);
+            }
+        }
         #endregion
+
     }
 }

@@ -411,6 +411,12 @@ namespace OSChina
         {
             Tool.To("/ScanCode.xaml");
         }
+
+        private void menu_SearchUser_Click(object sender, EventArgs e)
+        {
+            Tool.To("/FindUser.xaml");
+        }
+
         #endregion
 
         #region Back键处理
@@ -438,6 +444,5 @@ namespace OSChina
         }
 
         #endregion
-
     }
 }

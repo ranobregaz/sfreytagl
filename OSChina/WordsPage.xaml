@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:MyControl="clr-namespace:OSChina.Controls"
     xmlns:tileEffect="clr-namespace:WP7_ControlsLib.Controls;assembly=WP7_ControlsLib"
     xmlns:c4f="clr-namespace:Coding4Fun.Phone.Controls;assembly=Coding4Fun.Phone.Controls"
@@ -20,7 +21,8 @@
 
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="template_Normal">
-            <StackPanel>
+            <Grid>
+                <StackPanel>
                 <c4f:ChatBubble ChatBubbleDirection="{Binding direction,Mode=OneTime}" Margin="{Binding border,Mode=OneTime}" Opacity="{Binding opactiy,Mode=OneTime}" Width="350">
                     <c4f:ChatBubble.Content>
                         <Grid Width="350">
@@ -33,7 +35,13 @@
                         </Grid>
                     </c4f:ChatBubble.Content>
                 </c4f:ChatBubble>
-            </StackPanel>
+                </StackPanel>
+                <toolkit:ContextMenuService.ContextMenu>
+                    <toolkit:ContextMenu>
+                        <toolkit:MenuItem x:Name="menu_Copy" Header="复制留言" Click="menu_Copy_Click" />
+                    </toolkit:ContextMenu>
+                </toolkit:ContextMenuService.ContextMenu>
+            </Grid>
         </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
 

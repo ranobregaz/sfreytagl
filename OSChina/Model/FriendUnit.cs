@@ -25,5 +25,6 @@ namespace OSChina. Model
             get { return string. Format( "/Resource/{0}", isMale ? "man.png" : "woman.png" ); }
             set { ; }
         }
+        public string from { get; set; }
     }
 }

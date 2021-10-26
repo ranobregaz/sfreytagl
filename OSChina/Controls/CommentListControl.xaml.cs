@@ -335,6 +335,19 @@ namespace OSChina. Controls
         }
 
         /// <summary>
+        /// 复制评论
+        /// </summary>
+        private void menu_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = sender as MenuItem;
+            CommentUnit c = item. DataContext as CommentUnit;
+            if (c != null)
+            {
+                Tool.Copy2Clipboard(c.content);
+            }
+        }
+
+        /// <summary>
         /// 添加控件 添加评论的引用与评论的回复 这里可能造成列表上下晃动
         /// </summary>
         private void panel_Loaded(object sender, RoutedEventArgs e)
@@ -400,5 +413,6 @@ namespace OSChina. Controls
             }
         }
         #endregion
+
     }
 }
