@@ -20,7 +20,6 @@ namespace OSChina
         public FindUser()
         {
             InitializeComponent();
-            this.resultUserList.listBoxHelper_ReloadDelegate();
         }
         #endregion
 
