@@ -29,6 +29,7 @@
                 <toolkit:ContextMenuService.ContextMenu>
                     <toolkit:ContextMenu>
                         <toolkit:MenuItem x:Name="menu_Delete" Header="删除评论" Click="menu_Delete_Click" />
+                        <toolkit:MenuItem x:Name="menu_Copy" Header="复制评论" Click="menu_Copy_Click" />
                     </toolkit:ContextMenu>
                 </toolkit:ContextMenuService.ContextMenu>
             </Grid>

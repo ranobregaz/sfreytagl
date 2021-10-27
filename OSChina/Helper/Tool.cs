@@ -755,34 +755,65 @@ namespace OSChina
             }
         }
 
-        public static FriendUnit[ ] GetFriendsList(string response)
+        public static FriendUnit[] GetFriendsList(string response)
         {
-            Tool. GetUserNotice( response );
+            Tool.GetUserNotice(response);
             try
             {
-                XElement friends = XElement. Parse( response ). Element( "friends" );
-                if ( friends == null || friends. HasElements == false )
+                XElement friends = XElement.Parse(response).Element("friends");
+                if (friends == null || friends.HasElements == false)
                 {
                     return null;
                 }
                 else
                 {
-                    FriendUnit[ ] result = friends. Elements( "friend" ). Select(
+                    FriendUnit[] result = friends.Elements("friend").Select(
                             f => new FriendUnit
                             {
-                                name = f. Element( "name" ). Value,
-                                id = f. Element( "userid" ). Value. ToInt32( ),
-                                portrait = f. Element( "portrait" ). Value,
-                                expertise = f. Element( "expertise" ). Value,
-                                isMale = f. Element( "gender" ). Value == "1",
+                                name = f.Element("name").Value,
+                                id = f.Element("userid").Value.ToInt32(),
+                                portrait = f.Element("portrait").Value,
+                                expertise = f.Element("expertise").Value,
+                                isMale = f.Element("gender").Value == "1",
                             }
-                        ). ToArray( );
+                        ).ToArray();
                     return result;
                 }
             }
-            catch ( Exception e)
+            catch (Exception e)
             {
-                Debug. WriteLine( "FriendsList 解析错误: {0}", e. Message );
+                Debug.WriteLine("FriendsList 解析错误: {0}", e.Message);
+                return null;
+            }
+        }
+        public static FriendUnit[] GetFindUserList(string response)
+        {
+            Tool.GetUserNotice(response);
+            try
+            {
+                XElement friends = XElement.Parse(response).Element("users");
+                if (friends == null || friends.HasElements == false)
+                {
+                    return null;
+                }
+                else
+                {
+                    FriendUnit[] result = friends.Elements("user").Select(
+                            f => new FriendUnit
+                            {
+                                name = f.Element("name").Value,
+                                id = f.Element("uid").Value.ToInt32(),
+                                portrait = f.Element("portrait").Value,
+                                isMale = f.Element("gender").Value == "男",
+                                from = f.Element("from").Value,
+                            }
+                        ).ToArray();
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("FindUserList 解析错误: {0}", e.Message);
                 return null;
             }
         }
@@ -1927,7 +1958,7 @@ namespace OSChina
                         }
                     }
                     Clipboard.SetText(text);
-                    MessageBox.Show("已复制到剪切板");
+                    //MessageBox.Show("已复制到剪切板");
                     return true;
                 }
             }

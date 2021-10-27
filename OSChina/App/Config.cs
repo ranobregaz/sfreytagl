@@ -64,6 +64,7 @@ namespace OSChina
         public const string api_userblog_delete = "http://www.oschina.net/action/api/userblog_delete";
         public const string api_blog_list = "http://www.oschina.net/action/api/blog_list";
         public const string api_userinfo_update = "http://www.oschina.net/action/api/portrait_update";
+        public const string api_find_user = "http://www.oschina.net/action/api/find_user";
 #elif local
         public const string api_news_list = "http://192.168.1.134/action/api/news_list";
         public const string api_news_detail = "http://192.168.1.134/action/api/news_detail";
