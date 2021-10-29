@@ -64,7 +64,7 @@ namespace OSChina
             if (this.listBox_ScrollViewer != null && isLoadOver == false)
             {
 
-                System.Diagnostics.Debug.WriteLine("LayoutUpdated:    VerticalOffset:" + this.listBox_ScrollViewer.VerticalOffset + ";    ScrollableHeight:" + this.listBox_ScrollViewer.ScrollableHeight + ";");
+                //System.Diagnostics.Debug.WriteLine("LayoutUpdated:    VerticalOffset:" + this.listBox_ScrollViewer.VerticalOffset + ";    ScrollableHeight:" + this.listBox_ScrollViewer.ScrollableHeight + ";");
                 //是否往下滑动
                 bool isGoingDown = this.listBox_ScrollViewer.VerticalOffset > this.lastListBoxScrollableVerticalOffset;
                 this.lastListBoxScrollableVerticalOffset = this.listBox_ScrollViewer.VerticalOffset;
@@ -100,16 +100,16 @@ namespace OSChina
                 {
                     this.canRefresh = true;
                 }
-                System.Diagnostics.Debug.WriteLine("MouseMove:    actuableOffset:" + this.actuableOffset + ";    VerticalOffset:" + this.validStartOffset + ";    ScrollViewer_VerticalOffset:" + this.listBox_ScrollViewer.VerticalOffset + ";");
+                //System.Diagnostics.Debug.WriteLine("MouseMove:    actuableOffset:" + this.actuableOffset + ";    VerticalOffset:" + this.validStartOffset + ";    ScrollViewer_VerticalOffset:" + this.listBox_ScrollViewer.VerticalOffset + ";");
             }
         }
 
         private void ListBox_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("ListBox_ManipulationCompleted    actuableOffset:" + actuableOffset + ";    ScrollViewer VerticalOffset:" + this.listBox_ScrollViewer.VerticalOffset + ";");
+            //System.Diagnostics.Debug.WriteLine("ListBox_ManipulationCompleted    actuableOffset:" + actuableOffset + ";    ScrollViewer VerticalOffset:" + this.listBox_ScrollViewer.VerticalOffset + ";");
             if (this.canRefresh)
             {
-                System.Diagnostics.Debug.WriteLine("Head pull bingo!");
+                //System.Diagnostics.Debug.WriteLine("Head pull bingo!");
                 this.canRefresh = false;
                 Refresh();
             }

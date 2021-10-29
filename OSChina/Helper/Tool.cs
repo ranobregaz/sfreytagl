@@ -931,25 +931,47 @@ namespace OSChina
             return client;
         }
 
+        public static HttpPostHelper SendPostClientByHttpWebRequest(string urlPrefix, Dictionary<string, string> parameters)
+        {
+            /*
+             * WP7 会缓存相同url 的返回结果 所以这里需要添加 guid 参数
+             */
+            if (parameters != null && parameters.ContainsKey("guid") == false)
+            {
+                parameters.Add("guid", Guid.NewGuid().ToString());
+            }
+            HttpPostHelper request = new HttpPostHelper(parameters)
+            {
+                UserAgent = Config.UserAgent,
+            };
+            //抓取到 Cookie
+            request.OnGetCookie += (cookie) =>
+            {
+                Config.Cookie = cookie;
+            };
+            request.DownloadStringAsync(new Uri(urlPrefix, UriKind.Absolute), Config.Cookie.EnsureNotNull());
+            return request;
+        }
+
         public static PostClient SendPostClient(string urlPrefix, Dictionary<string, object> parameters)
         {
             /*
              * WP7 会缓存相同url 的返回结果 所以这里需要添加 guid 参数
              */
-            if ( parameters != null && parameters.ContainsKey("guid") == false)
+            if (parameters != null && parameters.ContainsKey("guid") == false)
             {
-                parameters. Add( "guid", Guid. NewGuid( ). ToString( ) );
+                parameters.Add("guid", Guid.NewGuid().ToString());
             }
-            PostClient client = new PostClient( parameters )
+            PostClient client = new PostClient(parameters)
             {
-                UserAgent = Config. UserAgent,
+                UserAgent = Config.UserAgent,
             };
             //抓取到 Cookie
-            client. OnGetCookie += (cookie) =>
+            client.OnGetCookie += (cookie) =>
             {
-                Config. Cookie = cookie;
+                Config.Cookie = cookie;
             };
-            client. DownloadStringAsync( new Uri( urlPrefix, UriKind. Absolute ), Config. Cookie.EnsureNotNull() );
+            client.DownloadStringAsync(new Uri(urlPrefix, UriKind.Absolute), Config.Cookie.EnsureNotNull());
             return client;
         }
 

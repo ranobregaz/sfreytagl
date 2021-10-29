@@ -53,72 +53,73 @@ namespace OSChina
         /// </summary>
         private void btn_Login_Click(object sender, RoutedEventArgs e)
         {
-            string name = txt_UserName. Text. Trim( );
-            string password = txt_Password. Password. Trim( );
-            if ( name.Length == 0 )
+            string name = txt_UserName.Text.Trim();
+            string password = txt_Password.Password.Trim();
+            if (name.Length == 0)
             {
-                MessageBox. Show( "用户名不能为空" );
+                MessageBox.Show("用户名不能为空");
                 return;
             }
-            if ( password.Length == 0 )
+            if (password.Length == 0)
             {
-                MessageBox. Show( "登陆密码不能为空" );
+                MessageBox.Show("登陆密码不能为空");
                 return;
             }
             //开始登陆
-            this. LoadingText = "登陆中";
-            this. ProgressIndicatorIsVisible = true;
-            Dictionary<string, object> parameters = new Dictionary<string, object>
+            this.LoadingText = "登陆中";
+            this.ProgressIndicatorIsVisible = true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>
             {
                 {"username", name},
                 {"pwd", password},
                 {"keep_login", "1"},
             };
-            PostClient client = Tool. SendPostClient( Config. api_login_validate, parameters );
-            client. DownloadStringCompleted += (s, e1) =>
+            HttpPostHelper request = Tool.SendPostClientByHttpWebRequest(Config.api_login_validate, parameters);
+            request.DownloadStringCompleted += (s, e1) =>
+            {
+                this.ProgressIndicatorIsVisible = false;
+                if (e1.Error != null)
                 {
-                    this. ProgressIndicatorIsVisible = false;
-                    if ( e1. Error != null )
+                    MessageBox.Show(string.Format("登陆时网络错误: {0}", e1.Error.Message), "登陆失败", MessageBoxButton.OK);
+                    System.Diagnostics.Debug.WriteLine("登陆时网络错误: {0}", e1.Error.Message);
+                    return;
+                }
+                else
+                {
+                    MyInfo myInfo;
+                    ApiResult result = Tool.GetLoginResult(e1.Result, out myInfo);
+                    if (result != null)
                     {
-                        System. Diagnostics. Debug. WriteLine( "登陆时网络错误: {0}", e1. Error. Message );
-                        return;
+                        switch (result.errorCode)
+                        {
+                            case 1:
+                                if ((bool)check_RememberMe.IsChecked == true)
+                                {
+                                    Config.LoginName = txt_UserName.Text.Trim();
+                                    Config.Password = txt_Password.Password.Trim();
+                                }
+                                else
+                                {
+                                    Config.LoginName = Config.Password = null;
+                                }
+                                Config.UID = myInfo.uid;
+                                Config.MyInfo = myInfo;
+                                EventSingleton.Instance.RaiseLoginOrLogout();
+                                //登陆成功后可能需要回退
+                                if (this.isNeedBack && this.NavigationService.CanGoBack)
+                                {
+                                    this.NavigationService.GoBack();
+                                }
+                                break;
+                            case 0:
+                            case -1:
+                            case -2:
+                                MessageBox.Show((result.errorMessage).TrimEnd('\n', '\t'), "登陆失败", MessageBoxButton.OK);
+                                break;
+                        }
                     }
-                    else
-                    {
-                         MyInfo myInfo;
-                         ApiResult result = Tool. GetLoginResult( e1. Result, out myInfo );
-                         if ( result != null )
-                         {
-                             switch ( result.errorCode )
-                             {
-                                 case 1:
-                                     if ( ( bool ) check_RememberMe. IsChecked == true )
-                                     {
-                                         Config. LoginName = txt_UserName. Text. Trim( );
-                                         Config. Password = txt_Password. Password. Trim( );
-                                     }
-                                     else
-                                     {
-                                         Config. LoginName = Config. Password = null;
-                                     }
-                                     Config. UID = myInfo. uid;
-                                     Config. MyInfo = myInfo;
-                                     EventSingleton. Instance. RaiseLoginOrLogout( );
-                                     //登陆成功后可能需要回退
-                                     if ( this.isNeedBack && this.NavigationService.CanGoBack )
-                                     {
-                                         this. NavigationService. GoBack( );
-                                     }
-                                     break;
-                                 case 0:
-                                 case -1:
-                                 case -2:
-                                     MessageBox. Show( ( result. errorMessage ). TrimEnd('\n','\t'), "登陆失败", MessageBoxButton. OK );
-                                     break;
-                             }
-                         }
-                    }
-                };
+                }
+            };
 
         }
 
