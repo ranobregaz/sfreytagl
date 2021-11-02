@@ -101,7 +101,7 @@ namespace OSChina
                         string responseString = streamRead.ReadToEnd();
                         streamRead.Close();
                         streamResponse.Close();
-                        OnGetCookie(__request.CookieContainer.GetCookieHeader(__request.RequestUri));
+                        OnGetCookie(response.Headers["Set-Cookie"]);
                         response.Close();
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
