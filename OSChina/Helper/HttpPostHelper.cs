@@ -21,21 +21,7 @@ namespace OSChina
     {
         public HttpPostHelper(IDictionary<string, string> parameters)
         {
-            StringBuilder buffer = new StringBuilder();
-            int i = 0;
-            foreach (string key in parameters.Keys)
-            {
-                if (i > 0)
-                {
-                    buffer.AppendFormat("&{0}={1}", key, parameters[key]);
-                }
-                else
-                {
-                    buffer.AppendFormat("{0}={1}", key, parameters[key]);
-                }
-                i++;
-            }
-            byteArray = System.Text.Encoding.UTF8.GetBytes(buffer.ToString());
+            byteArray = System.Text.Encoding.UTF8.GetBytes(HttpGetHelper.GetQueryStringByParameters("", new Dictionary<string, string>(parameters)));
         }
         public HttpPostHelper(IList<string> parameters)
         {
