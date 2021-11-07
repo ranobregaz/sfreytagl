@@ -52,7 +52,7 @@ namespace OSChina
                 }
                 else
                 {
-                    buffer.AppendFormat("{0}={1}", key, parameters[key]);
+                    buffer.AppendFormat("?{0}={1}", key, parameters[key]);
                 }
                 i++;
             }
