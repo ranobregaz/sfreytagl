@@ -29,6 +29,7 @@ using WP7_ControlsLib. Controls;
 using WP7_WebLib. HttpGet;
 using WP7_WebLib. HttpPost;
 using OSChinaScheduledTask_Notice;
+using cn.blu10ph.wp.HttpHelper;
 
 namespace OSChina
 {
@@ -926,7 +927,7 @@ namespace OSChina
             {
                 parameters. Add( "guid", Guid. NewGuid( ). ToString( ) );
             }
-            string uri = HttpGetHelper. GetQueryStringByParameters( urlPrefix, parameters );
+            string uri = cn.blu10ph.wp.HttpHelper.HttpGetHelper. GetQueryStringByParameters(  parameters,urlPrefix );
             client. DownloadStringAsync( new Uri( uri, UriKind. Absolute ) );
             return client;
         }
@@ -949,7 +950,7 @@ namespace OSChina
             {
                 Config.Cookie = cookie;
             };
-            request.DownloadStringAsync(new Uri(urlPrefix, UriKind.Absolute), Config.Cookie.EnsureNotNull());
+            request.PostAsync(new Uri(urlPrefix, UriKind.Absolute), Config.Cookie.EnsureNotNull());
             return request;
         }
 
@@ -2004,10 +2005,15 @@ namespace OSChina
         /// <param name="fileName">文件名</param>
         /// <param name="gStream">图像数据流</param>
         /// <param name="parameters">参数</param>
-        public static void AsyncPubTweetWithImage(string fileName, Stream gStream, Dictionary<string, object> parameters)
+        public static void AsyncPubTweetWithImage(string fileName, Stream gStream, Dictionary<string, string> parameters)
         {
+            /*
             StandardPostClient client = new StandardPostClient { UserAgent = Config. UserAgent };
             client. DownloadStringCompleted += (s, e1) =>
+            */
+
+            HttpPostHelper post = new HttpPostHelper() { UserAgent = Config.UserAgent };
+            post.PostCompleted += (s, e1) =>
             {
                 if ( e1. Error != null )
                 {
@@ -2035,12 +2041,9 @@ namespace OSChina
                 }
             };
             //开始发送
-            client. UploadFilesToRemoteUrl( Config. api_tweet_pub,
-                                                                new string[ ] { fileName },
-                                                                new Stream[ ] { gStream },
+            post.UploadAsync(new Uri(Config.api_tweet_pub),new Dictionary<string,Stream>{{"img",gStream}},
                                                                 parameters,
-                                                                Config. Cookie,
-                                                                true );
+                                                                Config. Cookie);
         }
         /// <summary>
         /// 后台更新头像

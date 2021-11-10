@@ -7,6 +7,7 @@ using System.Windows;
 using OSChina.Model;
 using WP7_WebLib.HttpPost;
 using WP7_ControlsLib.Controls;
+using cn.blu10ph.wp.HttpHelper;
 
 namespace OSChina
 {
@@ -75,7 +76,7 @@ namespace OSChina
                 {"keep_login", "1"},
             };
             HttpPostHelper request = Tool.SendPostClientByHttpWebRequest(Config.api_login_validate, parameters);
-            request.DownloadStringCompleted += (s, e1) =>
+            request.PostCompleted += (s, e1) =>
             {
                 this.ProgressIndicatorIsVisible = false;
                 if (e1.Error != null)
