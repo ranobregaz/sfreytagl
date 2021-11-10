@@ -81,6 +81,14 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="App\Config.cs" />
+    <Compile Include="Controls\FindUserListControl.xaml.cs">
+      <DependentUpon>FindUserListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FindUser.xaml.cs">
+      <DependentUpon>FindUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\HttpPostHelper.cs" />
+    <Compile Include="Helper\HttpGetHelper.cs" />
     <Compile Include="Model\ActionSing.cs" />
     <Compile Include="Helper\PhotoCameraLuminanceSource.cs" />
     <Compile Include="ScanCode.xaml.cs">
@@ -220,6 +228,14 @@
     <Page Include="ActivesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FindUserListControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FindUser.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ScanCode.xaml">
       <Generator>MSBuild:Compile</Generator>

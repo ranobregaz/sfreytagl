@@ -37,7 +37,8 @@ namespace OSChina. Controls
             this. Loaded += (s, e) =>
                 {
                     this.listBoxHelper = new ListBoxHelper(this.list_Fans, System.Windows.Media.Colors.Transparent, false, false);
-                    this. listBoxHelper. ReloadDelegate += new Action( listBoxHelper_ReloadDelegate );
+                    this.listBoxHelper.ReloadDelegate += new Action(listBoxHelper_ReloadDelegate);
+                    this.listBoxHelper_ReloadDelegate();
                 };
             
             this. Unloaded += (s, e) =>
@@ -105,8 +106,7 @@ namespace OSChina. Controls
                     if ( this. listBoxHelper. isLoadOver == false )
                     {
                         this. listBoxHelper. datas. Add( new TextBlock { Visibility = System.Windows.Visibility.Collapsed } );
-                        this. listBoxHelper. datas. Add( new TextBlock { Text = "    正 在", FontSize=30, HorizontalAlignment = System. Windows. HorizontalAlignment. Right } );
-                        this. listBoxHelper. datas. Add( new TextBlock { Text = "刷 新", FontSize=30, HorizontalAlignment = System. Windows. HorizontalAlignment. Left } );
+                        this.listBoxHelper.datas.Add(new TextBlock { Text = "    正 在 刷 新", FontSize = 30, HorizontalAlignment = System.Windows.HorizontalAlignment.Right });
                     }
                 }
             };
