@@ -2007,11 +2007,6 @@ namespace OSChina
         /// <param name="parameters">参数</param>
         public static void AsyncPubTweetWithImage(string fileName, Stream gStream, Dictionary<string, string> parameters)
         {
-            /*
-            StandardPostClient client = new StandardPostClient { UserAgent = Config. UserAgent };
-            client. DownloadStringCompleted += (s, e1) =>
-            */
-
             HttpPostHelper post = new HttpPostHelper() { UserAgent = Config.UserAgent };
             post.PostCompleted += (s, e1) =>
             {
@@ -2040,8 +2035,10 @@ namespace OSChina
                     }
                 }
             };
+            MemoryStream g_MS = gStream as MemoryStream;
+            byte[] fileBytes = g_MS.GetBuffer();
             //开始发送
-            post.UploadAsync(new Uri(Config.api_tweet_pub),new Dictionary<string,Stream>{{"img",gStream}},
+            post.UploadAsync(new Uri(Config.api_tweet_pub), new Dictionary<string, FileItem> { { "img", new FileItem(fileName, fileBytes) } },
                                                                 parameters,
                                                                 Config. Cookie);
         }
@@ -2050,10 +2047,10 @@ namespace OSChina
         /// </summary>
         /// <param name="gStream">头像数据流</param>
         /// <param name="parameters">http post 参数</param>
-        public static void AsyncUserUpdatePortrait( Stream gStream, Dictionary<string, object> parameters )
+        public static void AsyncUserUpdatePortrait( Stream gStream, Dictionary<string, string> parameters )
         {
-            StandardPostClient client = new StandardPostClient { UserAgent = Config. UserAgent };
-            client. DownloadStringCompleted += (s, e1) =>
+            HttpPostHelper post = new HttpPostHelper() { UserAgent = Config.UserAgent };
+            post.PostCompleted += (s, e1) =>
             {
                 if ( e1. Error != null )
                 {
@@ -2080,13 +2077,12 @@ namespace OSChina
                     }
                 }
             };
+            MemoryStream g_MS = gStream as MemoryStream;
+            byte[] fileBytes = g_MS.GetBuffer();
             //开始发送
-            client. UploadFilesToRemoteUrl( Config.api_userinfo_update,
-                                                                new string[ ] { "avatar.jpg" },
-                                                                new Stream[ ] { gStream },
+            post.UploadAsync(new Uri(Config.api_userinfo_update), new Dictionary<string, FileItem> { { "portrait", new FileItem("avatar.jpg", fileBytes) } },
                                                                 parameters,
-                                                                Config. Cookie,
-                                                                true, "portrait" );
+                                                                Config.Cookie);
         }
 
         private static void ReGetMyInfoOnUpdatePortrait( )
