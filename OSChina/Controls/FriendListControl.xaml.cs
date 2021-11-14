@@ -63,11 +63,11 @@ namespace OSChina. Controls
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid", Config.UID.ToString()},
+                {"uid", Config.UID},
                 {"relation",  IsFans ? "0" : "1"},
-                {"pageIndex", (this.listBoxHelper.allCount / 20).ToString()},
+                {"pageIndex", this.listBoxHelper.allCount / 20},
                 {"pageSize", "20"},
             };
             WebClient client = Tool. SendWebClient( Config. api_friends_list, parameters );

@@ -5,7 +5,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using OSChina.Model;
-using WP7_WebLib.HttpPost;
 using WP7_ControlsLib.Controls;
 using cn.blu10ph.wp.HttpHelper;
 
@@ -69,7 +68,7 @@ namespace OSChina
             //开始登陆
             this.LoadingText = "登陆中";
             this.ProgressIndicatorIsVisible = true;
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
                 {"username", name},
                 {"pwd", password},

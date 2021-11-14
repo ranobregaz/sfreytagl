@@ -7,8 +7,8 @@ using System. Collections. Generic;
 using System. Windows;
 using System. Windows. Controls;
 using OSChina. Model;
-using WP7_WebLib. HttpPost;
 using WP7_ControlsLib.Controls;
+using cn.blu10ph.wp.HttpHelper;
 
 namespace OSChina
 {
@@ -90,8 +90,8 @@ namespace OSChina
                 {"content",Tool.UrlEncode(content)},
                 {"isNoticeMe", (bool)this.checkEmailNoticeMe.IsChecked ? "1" : "0"},
             };
-            PostClient client = Tool.SendPostClient(Config.api_post_pub, parameters);
-            client.DownloadStringCompleted += (s, e1) =>
+            HttpPostHelper client = Tool.SendPostClientByHttpWebRequest(Config.api_post_pub, parameters);
+            client.PostCompleted += (s, e1) =>
             {
                 this.ProgressIndicatorIsVisible = false;
                 if (e1.Error != null)

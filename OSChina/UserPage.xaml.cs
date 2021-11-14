@@ -45,9 +45,9 @@ namespace OSChina
 
         private void GetUserInfo(  )
         {
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid", Config.UID.ToString()},
+                {"uid", Config.UID},
                 {"pageIndex", "0"},
                 {"pageSize", "0"},
             };
@@ -159,10 +159,10 @@ namespace OSChina
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid", Config.UID.ToString()},
-                {"hisuid", this.hisUID.ToString()},
+                {"uid", Config.UID},
+                {"hisuid", this.hisUID},
                 {"newrelation", "1"},
             };
             WebClient client = Tool. SendWebClient( Config. api_user_updaterelation, parameters );
@@ -196,10 +196,10 @@ namespace OSChina
         }
         private void icon_Relation_Click1(object sender, EventArgs e)
         {
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid", Config.UID.ToString()},
-                {"hisuid", this.hisUID.ToString()},
+                {"uid", Config.UID},
+                {"hisuid", this.hisUID},
                 {"newrelation", "0"},
             };
             WebClient client = Tool. SendWebClient( Config. api_user_updaterelation, parameters );

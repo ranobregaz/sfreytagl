@@ -10,7 +10,7 @@ using System. Windows. Controls;
 using System. Windows. Documents;
 using System. Windows. Media;
 using OSChina. Model;
-using WP7_WebLib. HttpPost;
+using cn.blu10ph.wp.HttpHelper;
 
 namespace OSChina
 {
@@ -75,8 +75,8 @@ namespace OSChina
                     {"receiver", this.receiverID},
                     {"content", Tool.UrlEncode(content)},
                 };
-                PostClient client = Tool.SendPostClient(Config.api_msg_pub, parameters);
-                client.DownloadStringCompleted += (s, e1) =>
+                HttpPostHelper client = Tool.SendPostClientByHttpWebRequest(Config.api_msg_pub, parameters);
+                client.PostCompleted += (s, e1) =>
                 {
                     this.ProgressIndicatorIsVisible = false;
                     if (e1.Error != null)

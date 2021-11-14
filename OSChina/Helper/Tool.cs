@@ -26,8 +26,6 @@ using Microsoft. Phone. Tasks;
 using OSChina. Model;
 using OSChina. Model. AppOnly;
 using WP7_ControlsLib. Controls;
-using WP7_WebLib. HttpGet;
-using WP7_WebLib. HttpPost;
 using OSChinaScheduledTask_Notice;
 using cn.blu10ph.wp.HttpHelper;
 
@@ -912,7 +910,7 @@ namespace OSChina
         #endregion
 
         #region Http操作
-        public static WebClient SendWebClient(string urlPrefix, Dictionary<string, string> parameters)
+        public static WebClient SendWebClient(string urlPrefix, Dictionary<string, object> parameters)
         {
             WebClient client = new WebClient( );
             client. Headers[ "User-Agent" ] = Config. UserAgent;
@@ -932,7 +930,7 @@ namespace OSChina
             return client;
         }
 
-        public static HttpPostHelper SendPostClientByHttpWebRequest(string urlPrefix, Dictionary<string, string> parameters)
+        public static HttpPostHelper SendPostClientByHttpWebRequest(string urlPrefix, Dictionary<string, object> parameters)
         {
             /*
              * WP7 会缓存相同url 的返回结果 所以这里需要添加 guid 参数
@@ -954,36 +952,14 @@ namespace OSChina
             return request;
         }
 
-        public static PostClient SendPostClient(string urlPrefix, Dictionary<string, object> parameters)
-        {
-            /*
-             * WP7 会缓存相同url 的返回结果 所以这里需要添加 guid 参数
-             */
-            if (parameters != null && parameters.ContainsKey("guid") == false)
-            {
-                parameters.Add("guid", Guid.NewGuid().ToString());
-            }
-            PostClient client = new PostClient(parameters)
-            {
-                UserAgent = Config.UserAgent,
-            };
-            //抓取到 Cookie
-            client.OnGetCookie += (cookie) =>
-            {
-                Config.Cookie = cookie;
-            };
-            client.DownloadStringAsync(new Uri(urlPrefix, UriKind.Absolute), Config.Cookie.EnsureNotNull());
-            return client;
-        }
-
         /// <summary>
         /// 主动呼叫获取 UserNotice
         /// </summary>
         public static void AsyncGetUserNotice( )
         {
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid", Config.UID.ToString()},
+                {"uid", Config.UID},
             };
             WebClient client = SendWebClient( Config. api_user_notice, parameters );
             client. DownloadStringCompleted += (s, e) =>
@@ -1043,10 +1019,10 @@ namespace OSChina
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid", Config.UID.ToString()},
-                {"type", type.ToString()},
+                {"uid", Config.UID},
+                {"type", type},
             };
             WebClient client = Tool. SendWebClient( Config. api_notice_clear, parameters );
             client. DownloadStringCompleted += (s, e) =>
@@ -2005,7 +1981,7 @@ namespace OSChina
         /// <param name="fileName">文件名</param>
         /// <param name="gStream">图像数据流</param>
         /// <param name="parameters">参数</param>
-        public static void AsyncPubTweetWithImage(string fileName, Stream gStream, Dictionary<string, string> parameters)
+        public static void AsyncPubTweetWithImage(string fileName, Stream gStream, Dictionary<string, object> parameters)
         {
             HttpPostHelper post = new HttpPostHelper() { UserAgent = Config.UserAgent };
             post.PostCompleted += (s, e1) =>
@@ -2047,7 +2023,7 @@ namespace OSChina
         /// </summary>
         /// <param name="gStream">头像数据流</param>
         /// <param name="parameters">http post 参数</param>
-        public static void AsyncUserUpdatePortrait( Stream gStream, Dictionary<string, string> parameters )
+        public static void AsyncUserUpdatePortrait( Stream gStream, Dictionary<string, object> parameters )
         {
             HttpPostHelper post = new HttpPostHelper() { UserAgent = Config.UserAgent };
             post.PostCompleted += (s, e1) =>
@@ -2088,9 +2064,9 @@ namespace OSChina
         private static void ReGetMyInfoOnUpdatePortrait( )
         {
             //然后网络获取
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
                     {
-                        {"uid", Config.UID.ToString()},
+                        {"uid", Config.UID},
                     };
             WebClient client = Tool. SendWebClient( Config. api_my_info, parameters );
             client. DownloadStringCompleted += (s1, e1) =>

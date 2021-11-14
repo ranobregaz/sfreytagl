@@ -388,9 +388,9 @@ namespace OSChina
                     Stream g_stream = Tool.ReduceSize(g_bmp);
 
                     //开始后台传输图片
-                    Dictionary<string, string> parameters = new Dictionary<string, string>
+                    Dictionary<string, object> parameters = new Dictionary<string, object>
                     {
-                        {"uid", Config.UID.ToString()},
+                        {"uid", Config.UID},
                     };
                     Tool.AsyncUserUpdatePortrait(g_stream, parameters);
                     //退回

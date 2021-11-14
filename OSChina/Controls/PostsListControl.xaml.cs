@@ -78,9 +78,9 @@ namespace OSChina. Controls
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"pageIndex", (this. listBoxHelper. allCount / 20).ToString()},
+                {"pageIndex", this.listBoxHelper. allCount/20},
                 {"pageSize", "20"},
             };
             if ( this. tag. IsNotNullOrWhitespace( ) )

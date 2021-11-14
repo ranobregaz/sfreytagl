@@ -64,12 +64,12 @@ namespace OSChina
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
                 {"catalog", "4"},
-                {"pageIndex", (this.listBoxHelper.allCount / 20).ToString()},
-                {"pageSize","20"},
-                {"id", this.friendid.ToString()},
+                {"pageIndex", this.listBoxHelper.allCount/20},
+                {"pageSize", "20"},
+                {"id", this.friendid},
             };
             WebClient client = Tool. SendWebClient( Config. api_comment_list, parameters );
             this. listBoxHelper. isLoading = true;

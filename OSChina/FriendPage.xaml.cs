@@ -43,9 +43,9 @@ namespace OSChina
             }
 
             //然后网络获取
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
                     {
-                        {"uid", Config.UID.ToString()},
+                        {"uid", Config.UID},
                     };
             WebClient client = Tool. SendWebClient( Config. api_my_info, parameters );
             client. DownloadStringCompleted += (s1, e1) =>

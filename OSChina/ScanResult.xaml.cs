@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Navigation;
 using WP7_JsonLib;
 using OSChina.Model;
-using WP7_WebLib.HttpPost;
+using cn.blu10ph.wp.HttpHelper;
 
 namespace OSChina
 {
@@ -104,8 +104,8 @@ namespace OSChina
                 }
                 parameters.Add("Cookie",Config.Cookie);
             }
-            PostClient client = Tool.SendPostClient(this.qrInfo.url, parameters);
-            client.DownloadStringCompleted += (s, e1) =>
+            HttpPostHelper client = Tool.SendPostClientByHttpWebRequest(this.qrInfo.url, parameters);
+            client.PostCompleted += (s, e1) =>
             {
                 this.ProgressIndicatorIsVisible = false;
                 if (e1.Error != null)

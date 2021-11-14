@@ -70,10 +70,10 @@ namespace OSChina. Controls
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"authoruid", authoruid.ToString()},
-                {"pageIndex", (this. listBoxHelper. allCount / 20).ToString()},
+                {"authoruid", authoruid},
+                {"pageIndex", this.listBoxHelper.allCount/20},
                 {"pageSize", "20"},
                 {"uid", Config.UID.ToString()},
             };
@@ -150,11 +150,11 @@ namespace OSChina. Controls
                     MessageBox. Show( "不能删除别人的博客", "温馨提示", MessageBoxButton. OK );
                     return;
                 }
-                Dictionary<string, string> parameters = new Dictionary<string, string>
+                Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    {"authoruid", b.authorUID.ToString()},
-                    {"uid", Config.UID.ToString()},
-                    {"id", b.id.ToString()},
+                    {"authoruid", b.authorUID},
+                    {"uid", Config.UID},
+                    {"id", b.id},
                 };
                 WebClient client = Tool. SendWebClient( Config. api_userblog_delete, parameters );
                 client. DownloadStringCompleted += (s, e1) =>

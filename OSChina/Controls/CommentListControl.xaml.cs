@@ -15,7 +15,7 @@ using Coding4Fun. Phone. Controls;
 using Microsoft. Phone. Controls;
 using OSChina. Model;
 using OSChina. Model. AppOnly;
-using WP7_WebLib. HttpPost;
+using cn.blu10ph.wp.HttpHelper;
 
 namespace OSChina. Controls
 {
@@ -83,16 +83,16 @@ namespace OSChina. Controls
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"pageIndex",(this.listBoxHelper.allCount/20).ToString()},
+                {"pageIndex",this.listBoxHelper.allCount/20},
                 {"pageSize", "20"},
-                {"id", this. id. ToString( )},
-                {"guid", Guid.NewGuid().ToString()},
+                {"id", this. id},
+                {"guid", Guid.NewGuid()},
             };
             if ( catalog != 5 )
             {
-                parameters. Add( "catalog", this. catalog. ToString( ) );
+                parameters. Add( "catalog", this. catalog);
             }
             WebClient client = Tool. SendWebClient( catalog != 5 ? Config. api_comment_list : Config. api_blogcomment_list, parameters );
             this. listBoxHelper. isLoading = true;
@@ -232,8 +232,8 @@ namespace OSChina. Controls
                                         {"objuid",c.authorID},
                                     };
                             }
-                            PostClient client = Tool. SendPostClient( this. catalog == ( int ) CommentType. Blog ? Config. api_blogcomment_pub : Config. api_comment_reply, parameters );
-                            client. DownloadStringCompleted += (s1, e2) =>
+                            HttpPostHelper client = Tool.SendPostClientByHttpWebRequest(this.catalog == (int)CommentType.Blog ? Config.api_blogcomment_pub : Config.api_comment_reply, parameters);
+                            client. PostCompleted += (s1, e2) =>
                             {
                                 if ( e2. Error != null )
                                 {
@@ -283,25 +283,25 @@ namespace OSChina. Controls
                     }
                 }
 
-                Dictionary<string, string> parameters = null;
+                Dictionary<string, object> parameters = null;
                 if ( this. catalog != ( int ) CommentType. Blog )
                 {
-                    parameters = new Dictionary<string, string>
+                    parameters = new Dictionary<string, object>
                     {
-                        {"catalog",this.catalog.ToString()},
-                        {"id",this.id.ToString()},
-                        {"replyid",c.id.ToString()},
-                        {"authorid", c.authorID.ToString()},
+                        {"catalog",this.catalog},
+                        {"id",this.id},
+                        {"replyid",c.id},
+                        {"authorid", c.authorID},
                     };
                 }
                 else
                 {
-                    parameters = new Dictionary<string, string>
+                    parameters = new Dictionary<string, object>
                     {
-                        {"blogid", this.id.ToString()},
-                        {"uid", Config.UID.ToString()},
-                        {"replyid", c.id.ToString()},
-                        {"authorid", c.authorID.ToString()},
+                        {"blogid", this.id},
+                        {"uid", Config.UID},
+                        {"replyid", c.id},
+                        {"authorid", c.authorID},
                         {"owneruid", this.owneruid},
                     };
                 }

@@ -10,7 +10,6 @@ using System.Windows.Media.Imaging;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using OSChina.Model;
-using WP7_WebLib.HttpPost;
 using WP7_ControlsLib.Controls;
 using cn.blu10ph.wp.HttpHelper;
 
@@ -138,9 +137,9 @@ namespace OSChina
                 return;
             }
             tweet = (this.g_stream == null) ? Tool.UrlEncode(tweet) : tweet;
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid", Config.UID.ToString()},
+                {"uid", Config.UID},
                 {"msg", tweet},
             };
             #region 如果不需要传递图片
