@@ -70,7 +70,6 @@
     <Reference Include="WP7_ControlsLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WP7_JsonLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WP7_UitlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="WP7_WebLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WP_HttpHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="zxing.wp7.1, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL" />
   </ItemGroup>
@@ -380,7 +379,6 @@
     <Content Include="Lib\WP7_ControlsLib.dll" />
     <Content Include="Lib\WP7_JsonLib.dll" />
     <Content Include="Lib\WP7_UitlLib.dll" />
-    <Content Include="Lib\WP7_WebLib.dll" />
     <Content Include="Lib\WP_HttpHelper.dll" />
     <Content Include="Lib\zxing.wp7.1.dll" />
     <Content Include="LICENSE.txt" />

@@ -939,7 +939,7 @@ namespace OSChina
             {
                 parameters.Add("guid", Guid.NewGuid().ToString());
             }
-            HttpPostHelper request = new HttpPostHelper(parameters)
+            HttpPostHelper request = new HttpPostHelper()
             {
                 UserAgent = Config.UserAgent,
             };
@@ -948,7 +948,7 @@ namespace OSChina
             {
                 Config.Cookie = cookie;
             };
-            request.PostAsync(new Uri(urlPrefix, UriKind.Absolute), Config.Cookie.EnsureNotNull());
+            request.PostAsync(new Uri(urlPrefix, UriKind.Absolute), parameters, Config.Cookie.EnsureNotNull());
             return request;
         }
 
@@ -2014,9 +2014,10 @@ namespace OSChina
             MemoryStream g_MS = gStream as MemoryStream;
             byte[] fileBytes = g_MS.GetBuffer();
             //开始发送
-            post.UploadAsync(new Uri(Config.api_tweet_pub), new Dictionary<string, FileItem> { { "img", new FileItem(fileName, fileBytes) } },
-                                                                parameters,
-                                                                Config. Cookie);
+            post.UploadAsync(new Uri(Config.api_tweet_pub),
+                                parameters,
+                                new Dictionary<string, FileItem> { { "img", new FileItem(fileName, fileBytes) } },
+                                Config. Cookie);
         }
         /// <summary>
         /// 后台更新头像
@@ -2056,9 +2057,10 @@ namespace OSChina
             MemoryStream g_MS = gStream as MemoryStream;
             byte[] fileBytes = g_MS.GetBuffer();
             //开始发送
-            post.UploadAsync(new Uri(Config.api_userinfo_update), new Dictionary<string, FileItem> { { "portrait", new FileItem("avatar.jpg", fileBytes) } },
-                                                                parameters,
-                                                                Config.Cookie);
+            post.UploadAsync(new Uri(Config.api_userinfo_update),
+                                parameters,
+                                new Dictionary<string, FileItem> { { "portrait", new FileItem("avatar.jpg", fileBytes) } },
+                                Config.Cookie);
         }
 
         private static void ReGetMyInfoOnUpdatePortrait( )

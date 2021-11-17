@@ -53,9 +53,6 @@
     <Reference Include="WP7_JsonLib">
       <HintPath>..\OSChina\Lib\WP7_JsonLib.dll</HintPath>
     </Reference>
-    <Reference Include="WP7_WebLib">
-      <HintPath>..\OSChina\Lib\WP7_WebLib.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ScheduledAgent.cs" />
