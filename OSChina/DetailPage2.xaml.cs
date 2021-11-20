@@ -15,7 +15,7 @@ using OSChina. Controls;
 using OSChina. Model;
 using OSChina. Model. AppOnly;
 using WP7_ControlsLib. Controls;
-using WP7_WebLib. HttpPost;
+using cn.blu10ph.wp.HttpHelper;
 
 namespace OSChina
 {
@@ -148,7 +148,7 @@ namespace OSChina
         private void DownloadDocument(string uri)
         {
             System.Diagnostics.Debug.WriteLine("DetailPage2_DownloadDocument");
-            WebClient proxy = Tool. SendWebClient( uri, new Dictionary<string, string>( ) );
+            WebClient proxy = Tool.SendWebClient(uri, new Dictionary<string, object>());
             proxy. DownloadStringCompleted += (s, e) =>
                 {
                     if ( e. Error != null )
@@ -370,8 +370,8 @@ namespace OSChina
                                             {"content", Tool.UrlEncode(e1.Result)},
                                         };
                                 }
-                                PostClient client = Tool. SendPostClient( this. DetailType == Model. AppOnly. DetailType. Blog ? Config. api_blogcomment_pub : Config. api_comment_pub, parameters );
-                                client. DownloadStringCompleted += (s1, e2) =>
+                                HttpPostHelper client = Tool.SendPostClientByHttpWebRequest(this.DetailType == Model.AppOnly.DetailType.Blog ? Config.api_blogcomment_pub : Config.api_comment_pub, parameters);
+                                client. PostCompleted += (s1, e2) =>
                                     {
                                         if ( e2. Error != null )
                                         {
@@ -432,9 +432,9 @@ namespace OSChina
             int commentCount;
             if ( GetUrl_Title_Author_CommentCount(out id, out url, out title, out author, out commentCount) )
             {
-                Dictionary<string, string> parameters = new Dictionary<string, string>
+                Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    {"uid", Config.UID.ToString()},
+                    {"uid", Config.UID},
                     {"objid", id},
                     {"type", GetFavoriteOperationType()},
                 };
@@ -485,9 +485,9 @@ namespace OSChina
             int commentCount;
             if ( GetUrl_Title_Author_CommentCount( out id, out url, out title, out author, out commentCount ) )
             {
-                Dictionary<string, string> parameters = new Dictionary<string, string>
+                Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    {"uid", Config.UID.ToString()},
+                    {"uid", Config.UID},
                     {"objid", id},
                     {"type", GetFavoriteOperationType()},
                 };

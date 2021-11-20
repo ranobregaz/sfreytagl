@@ -92,19 +92,19 @@ namespace OSChina. Controls
             {
                 return;
             }
-            Dictionary<string, string> parameters = null;
-            parameters = this. hisUID == 0 ? new Dictionary<string, string>
+            Dictionary<string, object> parameters = null;
+            parameters = this.hisUID == 0 ? new Dictionary<string, object>
                 {
-                    {"catalog", ((int)this.ActiveType).ToString()},
-                    {"uid", Config.UID.ToString()},
+                    {"catalog", (int)this.ActiveType},
+                    {"uid", Config.UID},
                     {"pageSize", "20"},
-                    {"pageIndex", (this.listBoxHelper.allCount / 20).ToString()},
-                } : new Dictionary<string, string>
+                    {"pageIndex", this.listBoxHelper.allCount/20},
+                } : new Dictionary<string, object>
                 {
-                    {"uid", Config.UID.ToString()},
-                    {"hisuid", this.hisUID.ToString()},
+                    {"uid", Config.UID},
+                    {"hisuid", this.hisUID},
                     {"pageSize","20"},
-                    {"pageIndex", (this.listBoxHelper.allCount / 20).ToString()},
+                    {"pageIndex", this.listBoxHelper.allCount/20},
                 };
             WebClient client = Tool. SendWebClient( this. hisUID == 0 ? Config. api_active_list : Config. api_user_info, parameters );
             this. listBoxHelper. isLoading = true;

@@ -26,9 +26,8 @@ using Microsoft. Phone. Tasks;
 using OSChina. Model;
 using OSChina. Model. AppOnly;
 using WP7_ControlsLib. Controls;
-using WP7_WebLib. HttpGet;
-using WP7_WebLib. HttpPost;
 using OSChinaScheduledTask_Notice;
+using cn.blu10ph.wp.HttpHelper;
 
 namespace OSChina
 {
@@ -911,7 +910,7 @@ namespace OSChina
         #endregion
 
         #region Http操作
-        public static WebClient SendWebClient(string urlPrefix, Dictionary<string, string> parameters)
+        public static WebClient SendWebClient(string urlPrefix, Dictionary<string, object> parameters)
         {
             WebClient client = new WebClient( );
             client. Headers[ "User-Agent" ] = Config. UserAgent;
@@ -926,12 +925,12 @@ namespace OSChina
             {
                 parameters. Add( "guid", Guid. NewGuid( ). ToString( ) );
             }
-            string uri = HttpGetHelper. GetQueryStringByParameters( urlPrefix, parameters );
+            string uri = cn.blu10ph.wp.HttpHelper.HttpGetHelper. GetQueryStringByParameters(  parameters,urlPrefix );
             client. DownloadStringAsync( new Uri( uri, UriKind. Absolute ) );
             return client;
         }
 
-        public static HttpPostHelper SendPostClientByHttpWebRequest(string urlPrefix, Dictionary<string, string> parameters)
+        public static HttpPostHelper SendPostClientByHttpWebRequest(string urlPrefix, Dictionary<string, object> parameters)
         {
             /*
              * WP7 会缓存相同url 的返回结果 所以这里需要添加 guid 参数
@@ -940,7 +939,7 @@ namespace OSChina
             {
                 parameters.Add("guid", Guid.NewGuid().ToString());
             }
-            HttpPostHelper request = new HttpPostHelper(parameters)
+            HttpPostHelper request = new HttpPostHelper()
             {
                 UserAgent = Config.UserAgent,
             };
@@ -949,30 +948,8 @@ namespace OSChina
             {
                 Config.Cookie = cookie;
             };
-            request.DownloadStringAsync(new Uri(urlPrefix, UriKind.Absolute), Config.Cookie.EnsureNotNull());
+            request.PostAsync(new Uri(urlPrefix, UriKind.Absolute), parameters, Config.Cookie.EnsureNotNull());
             return request;
-        }
-
-        public static PostClient SendPostClient(string urlPrefix, Dictionary<string, object> parameters)
-        {
-            /*
-             * WP7 会缓存相同url 的返回结果 所以这里需要添加 guid 参数
-             */
-            if (parameters != null && parameters.ContainsKey("guid") == false)
-            {
-                parameters.Add("guid", Guid.NewGuid().ToString());
-            }
-            PostClient client = new PostClient(parameters)
-            {
-                UserAgent = Config.UserAgent,
-            };
-            //抓取到 Cookie
-            client.OnGetCookie += (cookie) =>
-            {
-                Config.Cookie = cookie;
-            };
-            client.DownloadStringAsync(new Uri(urlPrefix, UriKind.Absolute), Config.Cookie.EnsureNotNull());
-            return client;
         }
 
         /// <summary>
@@ -980,9 +957,9 @@ namespace OSChina
         /// </summary>
         public static void AsyncGetUserNotice( )
         {
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid", Config.UID.ToString()},
+                {"uid", Config.UID},
             };
             WebClient client = SendWebClient( Config. api_user_notice, parameters );
             client. DownloadStringCompleted += (s, e) =>
@@ -1042,10 +1019,10 @@ namespace OSChina
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid", Config.UID.ToString()},
-                {"type", type.ToString()},
+                {"uid", Config.UID},
+                {"type", type},
             };
             WebClient client = Tool. SendWebClient( Config. api_notice_clear, parameters );
             client. DownloadStringCompleted += (s, e) =>
@@ -2006,8 +1983,8 @@ namespace OSChina
         /// <param name="parameters">参数</param>
         public static void AsyncPubTweetWithImage(string fileName, Stream gStream, Dictionary<string, object> parameters)
         {
-            StandardPostClient client = new StandardPostClient { UserAgent = Config. UserAgent };
-            client. DownloadStringCompleted += (s, e1) =>
+            HttpPostHelper post = new HttpPostHelper() { UserAgent = Config.UserAgent };
+            post.PostCompleted += (s, e1) =>
             {
                 if ( e1. Error != null )
                 {
@@ -2034,13 +2011,13 @@ namespace OSChina
                     }
                 }
             };
+            MemoryStream g_MS = gStream as MemoryStream;
+            byte[] fileBytes = g_MS.GetBuffer();
             //开始发送
-            client. UploadFilesToRemoteUrl( Config. api_tweet_pub,
-                                                                new string[ ] { fileName },
-                                                                new Stream[ ] { gStream },
-                                                                parameters,
-                                                                Config. Cookie,
-                                                                true );
+            post.UploadAsync(new Uri(Config.api_tweet_pub),
+                                parameters,
+                                new Dictionary<string, FileItem> { { "img", new FileItem(fileName, fileBytes) } },
+                                Config. Cookie);
         }
         /// <summary>
         /// 后台更新头像
@@ -2049,8 +2026,8 @@ namespace OSChina
         /// <param name="parameters">http post 参数</param>
         public static void AsyncUserUpdatePortrait( Stream gStream, Dictionary<string, object> parameters )
         {
-            StandardPostClient client = new StandardPostClient { UserAgent = Config. UserAgent };
-            client. DownloadStringCompleted += (s, e1) =>
+            HttpPostHelper post = new HttpPostHelper() { UserAgent = Config.UserAgent };
+            post.PostCompleted += (s, e1) =>
             {
                 if ( e1. Error != null )
                 {
@@ -2077,21 +2054,21 @@ namespace OSChina
                     }
                 }
             };
+            MemoryStream g_MS = gStream as MemoryStream;
+            byte[] fileBytes = g_MS.GetBuffer();
             //开始发送
-            client. UploadFilesToRemoteUrl( Config.api_userinfo_update,
-                                                                new string[ ] { "avatar.jpg" },
-                                                                new Stream[ ] { gStream },
-                                                                parameters,
-                                                                Config. Cookie,
-                                                                true, "portrait" );
+            post.UploadAsync(new Uri(Config.api_userinfo_update),
+                                parameters,
+                                new Dictionary<string, FileItem> { { "portrait", new FileItem("avatar.jpg", fileBytes) } },
+                                Config.Cookie);
         }
 
         private static void ReGetMyInfoOnUpdatePortrait( )
         {
             //然后网络获取
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
                     {
-                        {"uid", Config.UID.ToString()},
+                        {"uid", Config.UID},
                     };
             WebClient client = Tool. SendWebClient( Config. api_my_info, parameters );
             client. DownloadStringCompleted += (s1, e1) =>

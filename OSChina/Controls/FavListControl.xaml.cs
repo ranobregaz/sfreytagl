@@ -63,11 +63,11 @@ namespace OSChina. Controls
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid", Config.UID.ToString()},
-                {"type", ((int)FavType).ToString()},
-                {"pageIndex",(this.listBoxHelper.allCount/20).ToString()},
+                {"uid", Config.UID},
+                {"type", (int)FavType},
+                {"pageIndex", this.listBoxHelper.allCount/20},
                 {"pageSize", "20"},
             };
             WebClient client = Tool. SendWebClient( Config. api_fav_list, parameters );
@@ -148,11 +148,11 @@ namespace OSChina. Controls
             FavUnit f = item. DataContext as FavUnit;
             if ( f != null )
             {
-                Dictionary<string, string> parameters = new Dictionary<string, string>
+                Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    {"uid", Config.UID.ToString()},
-                    {"objid", f.id.ToString()},
-                    {"type",f.type.ToString()},
+                    {"uid", Config.UID},
+                    {"objid", f.id},
+                    {"type",f.type},
                 };
                 WebClient client = Tool. SendWebClient( Config. api_fav_delete, parameters );
                 client. DownloadStringCompleted += (s, e1) =>

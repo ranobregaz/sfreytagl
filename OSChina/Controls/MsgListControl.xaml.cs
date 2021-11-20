@@ -53,11 +53,11 @@ namespace OSChina. Controls
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid",Config.UID.ToString()},
-                {"pageIndex",(this.listBoxHelper.allCount/20).ToString()},
-                {"pageSize", "20"},
+                {"uid",Config.UID},
+                {"pageIndex",this.listBoxHelper.allCount/20},
+                {"pageSize","20"},
             };
             WebClient client = Tool. SendWebClient( Config.api_msg_list, parameters );
             this. listBoxHelper. isLoading = true;
@@ -141,10 +141,10 @@ namespace OSChina. Controls
             MsgUnit m = item. DataContext as MsgUnit;
             if ( m != null )
             {
-                Dictionary<string, string> parameters = new Dictionary<string, string>
+                Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    {"uid", Config.UID.ToString()},
-                    {"friendid", m.friendID.ToString()},
+                    {"uid", Config.UID},
+                    {"friendid", m.friendID},
                 };
                 WebClient client = Tool. SendWebClient( Config.api_msg_delete, parameters );
                 client. DownloadStringCompleted += (s, e1) =>

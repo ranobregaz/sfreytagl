@@ -94,10 +94,10 @@ namespace OSChina. Controls
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                {"uid", GetUID( ).ToString()},
-                {"pageIndex", (this. listBoxHelper. allCount / 20).ToString()},
+                {"uid", GetUID()},
+                {"pageIndex", this.listBoxHelper.allCount/20},
                 {"pageSize", "20"},
             };
             WebClient client = Tool. SendWebClient( Config. api_tweet_list, parameters );
@@ -266,10 +266,10 @@ namespace OSChina. Controls
                     MessageBox. Show( "不能删除别人的动弹", "温馨提示", MessageBoxButton. OK );
                     return;
                 }
-                Dictionary<string, string> parameters = new Dictionary<string, string>
+                Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    {"uid", Config.UID.ToString()},
-                    {"tweetid", t.id.ToString()},
+                    {"uid", Config.UID},
+                    {"tweetid", t.id},
                 };
                 WebClient client = Tool. SendWebClient( Config.api_tweet_delete, parameters );
                 client. DownloadStringCompleted += (s, e1) =>

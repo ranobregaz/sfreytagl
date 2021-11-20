@@ -10,8 +10,8 @@ using System.Windows.Media.Imaging;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using OSChina.Model;
-using WP7_WebLib.HttpPost;
 using WP7_ControlsLib.Controls;
+using cn.blu10ph.wp.HttpHelper;
 
 namespace OSChina
 {
@@ -147,8 +147,8 @@ namespace OSChina
             if ( this.g_stream == null )
             {
                 
-                PostClient client = Tool. SendPostClient( Config. api_tweet_pub, parameters );
-                client. DownloadStringCompleted += (s, e1) =>
+                HttpPostHelper client = Tool.SendPostClientByHttpWebRequest( Config. api_tweet_pub, parameters );
+                client.PostCompleted += (s, e1) =>
                 {
                     
                     if ( e1. Error != null )
@@ -182,9 +182,7 @@ namespace OSChina
             #region 如果需要传递图片
             else
             {
-                //Tool. AsyncPubTweetWithImage( this. g_fileName, this. g_stream, parameters );
                 Tool. AsyncPubTweetWithImage( "1.jpg", this. g_stream, parameters );
-                //退回
                 EventSingleton. Instance. ToastMessage(null, "后台正在发送此动弹" );
             }
             #endregion

@@ -51,11 +51,11 @@ namespace OSChina
             {
                 return;
             }
-            Dictionary<string, string> parameters = new Dictionary<string, string>
+            Dictionary<string, object> parameters = new Dictionary<string, object>
             {
                 {"catalog",this.GetSearchCatalog},
                 {"content",this.txtSearch.Text.Trim()},
-                {"pageIndex", (this.listBoxHelper.allCount / 20).ToString()},
+                {"pageIndex",this.listBoxHelper.allCount/20},
                 {"pageSize","20"},
             };
             WebClient client = Tool. SendWebClient( Config.api_search_list, parameters );

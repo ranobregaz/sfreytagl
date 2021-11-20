@@ -96,7 +96,7 @@ namespace OSChina. Controls
         /// <param name="isLatest">true: 最新动弹  false: 热门动弹</param>
         public static void AnsycGetHottestTweets(bool isLatest)
         {
-            WebClient client = Tool. SendWebClient( Config. api_tweet_list, new Dictionary<string, string>( )
+            WebClient client = Tool.SendWebClient(Config.api_tweet_list, new Dictionary<string, object>()
             {
                 {"uid", isLatest ?  "0" : "-1"},
                 {"pageIndex", "0"},
